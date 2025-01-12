@@ -8,7 +8,7 @@ import "../Styles/AI.css";
 const AI = ({ setIsConnected }) => {
   const [resp, setresp] = useState();
   const [subf, setsubf] = useState("");
-  
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -18,6 +18,8 @@ const AI = ({ setIsConnected }) => {
   }
 
   const apiKey = process.env.REACT_APP_API_KEY;
+  const apiSliced = apiKey.slice(1, -1);
+  console.log(apiKey);
 
   const receiveDataFromChild = (data) => {
     setresp(data.data);
@@ -28,7 +30,7 @@ const AI = ({ setIsConnected }) => {
     <div className="app-container">
       <Header />
       <Section resp={resp} sub={subf} />
-      <Gemi sendDataToParent={receiveDataFromChild} apiKey={apiKey} />
+      <Gemi sendDataToParent={receiveDataFromChild} apiKey={apiSliced} />
     </div>
   );
 };

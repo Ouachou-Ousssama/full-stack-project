@@ -20,7 +20,6 @@ function App() {
           <Route path="/home" element={<Home setIsConnected={setIsConnected} />} />
           <Route path='/home/AskAi' element={<AI setIsConnected={setIsConnected} />} />
           <Route path="/home/chat/:id" element={<Chat setIsConnected={setIsConnected} />} />
-          <Route path="/home/profile/:id" element={<Profile setIsConnected={setIsConnected} />} />
           <Route path="/home/:id" element={<Details setIsConnected={setIsConnected} />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
