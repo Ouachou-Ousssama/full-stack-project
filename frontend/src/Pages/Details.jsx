@@ -1,11 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+
+import ProfilePic from "../images/profilee.webp";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Details = ({ setIsConnected }) => {
   const [Users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [userByForeign, setUserByForeign] = useState([]);
+  const [postid, setPostid] = useState("");
+  const [likedPosts, setLikedPosts] = useState([]);
+  const [clicked, setClicked] = useState(false);
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -16,12 +22,43 @@ const Details = ({ setIsConnected }) => {
     navigate("/");
   }
 
-  const getPostsByForeignKey = async () => {
-    const res = await axios.get(`http://localhost:8000/api/getPostsByForeignKey/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let className = "#000";
+
+  if (!clicked) {
+    className = "#000";
+  } else if (clicked) {
+    className = "#000";
+  }
+
+  const handleLike = (id) => {
+    setPostid(id);
+    setClicked((prev) => !prev);
+
+    setLikedPosts((prevLikedPosts) => {
+      const existingPostIndex = prevLikedPosts.findIndex(
+        (post) => post.post === id
+      );
+
+      if (existingPostIndex !== -1) {
+        const updatedPosts = [...prevLikedPosts];
+        updatedPosts[existingPostIndex].isClicked =
+          !updatedPosts[existingPostIndex].isClicked;
+        return updatedPosts;
+      } else {
+        return [...prevLikedPosts, { post: id, isClicked:  true  }];
+      }
     });
+  };
+
+  const getPostsByForeignKey = async () => {
+    const res = await axios.get(
+      `http://localhost:8000/api/getPostsByForeignKey/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     setUserByForeign(res.data);
   };
 
@@ -65,13 +102,22 @@ const Details = ({ setIsConnected }) => {
       <h1> id : {Users.id}</h1>
       <h1>email : {Users.email}</h1>
       <h1>dateBirth : {Users.dateOfBirth}</h1>
-      <div className="thread">
+      <div className={"w-full"}>
         {posts.map((post, index) => (
-          <div className="postContainer" key={index}>
-            <div className="thread-up">
-              <div className="logooo"></div>
-              <div className="firsttlast">
-                <div className="firstandlastname">
+          <div
+            className={
+              "w-full flex flex-col py-4 border border-solid border-[#ebeef0]"
+            }
+            key={index}
+          >
+            <div className="ml-2 flex items-center">
+              <img
+                src={ProfilePic}
+                alt="image cl"
+                className={"w-9 h-9 rounded-full"}
+              />
+              <div className="ml-2">
+                <div className="font-bold text-[20px]">
                   {userByForeign[index] &&
                     userByForeign[index].firstName +
                       " " +
@@ -80,15 +126,31 @@ const Details = ({ setIsConnected }) => {
                 <div>{post.content}</div>
               </div>
             </div>
-            <div className="thread-down">
-              <button>
+            <div className="ml-1 py-1">
+              <button className="m-3">
                 <svg
+                  onClick={() => handleLike(post.id)}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   width="24"
                   height="24"
-                  color="#000000"
-                  fill="none"
+                  color={
+                    likedPosts.some(
+                      (likedPost) =>
+                        likedPost.post === post.id && likedPost.isClicked
+                    )
+                      ? "red"
+                      : "none"
+                  }
+                  fill={
+                    likedPosts.some(
+                      (likedPost) =>
+                        likedPost.post === post.id && likedPost.isClicked
+                    )
+                      ? "red"
+                      : "none"
+                  }
+                  className={clicked && postid === post.id ? "border-0" : ""}
                 >
                   <path
                     d="M19.4626 3.99415C16.7809 2.34923 14.4404 3.01211 13.0344 4.06801C12.4578 4.50096 12.1696 4.71743 12 4.71743C11.8304 4.71743 11.5422 4.50096 10.9656 4.06801C9.55962 3.01211 7.21909 2.34923 4.53744 3.99415C1.01807 6.15294 0.221721 13.2749 8.33953 19.2834C9.88572 20.4278 10.6588 21 12 21C13.3412 21 14.1143 20.4278 15.6605 19.2834C23.7783 13.2749 22.9819 6.15294 19.4626 3.99415Z"
@@ -104,7 +166,7 @@ const Details = ({ setIsConnected }) => {
                   viewBox="0 0 24 24"
                   width="24"
                   height="24"
-                  color="#000000"
+                  color={clicked && postid === post.id ? className : className}
                   fill="none"
                 >
                   <path

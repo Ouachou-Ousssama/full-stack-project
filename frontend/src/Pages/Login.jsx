@@ -25,24 +25,22 @@ const Login = ({ setIsConnected }) => {
         email: login,
         password: password,
       })
-      .then(
-        (res) => {
-            localStorage.setItem("lastName", res.data.user.lastName);
-            localStorage.setItem("firstName", res.data.user.firstName);
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("id",res.data.user.id);
-            console.log(res.data.user.id);
-            navigate("/home");
-            setIsConnected(true);
-        }
-      )
+      .then((res) => {
+        localStorage.setItem("lastName", res.data.user.lastName);
+        localStorage.setItem("firstName", res.data.user.firstName);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.user.id);
+        console.log(res.data.user.id);
+        navigate("/home");
+        setIsConnected(true);
+      })
       .catch((err) => console.log(err));
   };
 
   return (
     <div className="formContainer">
       <motion.form
-      className="form"
+        className="form"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

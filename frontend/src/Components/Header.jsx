@@ -1,4 +1,4 @@
-import gpt from "../images/gpt.png";
+import gpt from "../images/ChatGpt.webp";
 import menubar from "../images/menubar.svg";
 import header from "../images/header.svg";
 import "../Styles/header.css";
@@ -8,13 +8,10 @@ const Header = () => {
   return (
     <div className="header-container">
       <div className="header">
-        <div className="logo">
-          <p>Oussama-GPT</p>
+        <div className="flex justify-between align-center">
+          <p className="flex align-center text-[20px] font-bold">CHATGPT</p>
           <img
-            style={{
-              width: "40px",
-              height: "40px",
-            }}
+            className="w-8 h-8 rounded-full ml-2"
             src={gpt}
             alt="img"
           />

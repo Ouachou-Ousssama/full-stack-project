@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Post::all();
+        $posts = Post::select('posts.*')
+        ->orderBy('id', 'desc')
+        ->get();
         return response()->json($posts);
     }
     public function create(Request $request){

@@ -1,47 +1,47 @@
 import "../Styles/SignUp.css";
 import { useEffect, useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-    const [signUp, setSignUp] = useState({
-      firstName: "",
-      lastName: "",
-      dateBirth: "",
-      email: "",
-      password: "",
+  const [signUp, setSignUp] = useState({
+    firstName: "",
+    lastName: "",
+    dateBirth: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post("http://localhost:8000/api/craeteGuests", {
+      firstName: signUp.firstName,
+      lastName: signUp.lastName,
+      dateOfBirth: signUp.dateBirth,
+      email: signUp.email,
+      password: signUp.password,
     });
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8000/api/craeteGuests', {
-          firstName : signUp.firstName,
-          lastName : signUp.lastName,
-          dateOfBirth : signUp.dateBirth,
-          email: signUp.email,
-          password : signUp.password,
-      })
-    }
+  const handleFirstNameChange = (e) => {
+    setSignUp({ ...signUp, firstName: e.target.value });
+  };
 
-    const handleFirstNameChange = (e) => {
-      setSignUp({ ...signUp, firstName: e.target.value });
-    };
+  const handleDateChange = (e) => {
+    setSignUp({ ...signUp, dateBirth: e.target.value });
+  };
 
-    const handleDateChange = (e) => {
-      setSignUp({ ...signUp, dateBirth: e.target.value });
-    };
-  
-    const handleLastNameChange = (e) => {
-      setSignUp({ ...signUp, lastName: e.target.value });
-    };
-  
-    const handleLoginChange = (e) => {
-      setSignUp({ ...signUp, email: e.target.value });
-    };
-  
-    const handlePasswordChange = (e) => {
-      setSignUp({ ...signUp, password: e.target.value });
-    };
+  const handleLastNameChange = (e) => {
+    setSignUp({ ...signUp, lastName: e.target.value });
+  };
+
+  const handleLoginChange = (e) => {
+    setSignUp({ ...signUp, email: e.target.value });
+  };
+
+  const handlePasswordChange = (e) => {
+    setSignUp({ ...signUp, password: e.target.value });
+  };
 
   return (
     <div className="formContainer">
@@ -90,7 +90,9 @@ const SignUp = () => {
           placeholder="entrer your password"
           onChange={handlePasswordChange}
         />
-        <button className="login" onClick={handleSubmit}>Craete</button>
+        <button className="login" onClick={handleSubmit}>
+          Craete
+        </button>
         <div className="hr"></div>
         <Link className="Login" to="/">
           Login

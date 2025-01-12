@@ -23,19 +23,18 @@ import { useState } from "react";
 
 const Chat = () => {
   const { id } = useParams();
-  const [msg,setmsg] = useState('');
+  const [msg, setmsg] = useState("");
 
   const handleSubmitMsg = (e) => {
     e.preventDefault();
     // window.Echo.channel("my-private-channel.user." + id).whisper("PrivateChannelEvent", { message: msg });
     // console.log(msg);
-    
-  } 
+  };
 
   return (
     <form onSubmit={handleSubmitMsg}>
       <div>Chat</div>
-      <input type="text" onChange={(e) => setmsg(e.target.value)}/>
+      <input type="text" onChange={(e) => setmsg(e.target.value)} />
     </form>
   );
 };
