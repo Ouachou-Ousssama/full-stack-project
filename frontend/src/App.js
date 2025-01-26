@@ -8,7 +8,6 @@ import AI from './Pages/AI';
 import SignUp from './Pages/SignUp';
 import Details from "./Pages/Details";
 import Chat from "./Pages/Chat";
-import Profile from "./Pages/Profile";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);

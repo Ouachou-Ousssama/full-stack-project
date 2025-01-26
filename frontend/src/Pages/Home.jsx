@@ -14,13 +14,13 @@ const Home = ({ setIsConnected }) => {
   const [component, setComponent] = useState(1);
 
   const token = localStorage.getItem("token");
-
+  console.log(isDark);
+  localStorage.setItem('theme',isDark ? 'dark' : 'light');
+  
+  
   const navigate = useNavigate();
-
   //console.log(tweet);
-
   //console.log(userByForeign);
-
   const LogOut = () => {
     setIsConnected(false);
     localStorage.removeItem("token");
