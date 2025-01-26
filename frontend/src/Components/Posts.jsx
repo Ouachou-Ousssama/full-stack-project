@@ -5,11 +5,9 @@ import { Link } from "react-router-dom";
 import ProfilePic from "../images/profilee.webp";
 const Posts = ({ isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
-
+  const [likeCount, setLikeCount] = useState(0);
   const [tweet, setTweet] = useState("");
   const [clicked, setClicked] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [iserr, setIserr] = useState(false);
   const [postid, setPostid] = useState("");
   const [likedPosts, setLikedPosts] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -19,19 +17,6 @@ const Posts = ({ isDark }) => {
   const token = localStorage.getItem("token");
   const handleTweet = (e) => {
     setTweet(e.target.value);
-  };
-
-  const getUsers = () => {
-    axios
-      .get("http://localhost:8000/api/getGuests", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch(() => setIserr(true));
   };
 
   const handleFormSubmit = (e) => {
@@ -79,21 +64,23 @@ const Posts = ({ isDark }) => {
   const handleLike = (id) => {
     setPostid(id);
     setClicked((prev) => !prev);
-
+    
+    
     setLikedPosts((prevLikedPosts) => {
       const existingPostIndex = prevLikedPosts.findIndex(
         (post) => post.post === id
       );
-
+      
       if (existingPostIndex !== -1) {
         const updatedPosts = [...prevLikedPosts];
         updatedPosts[existingPostIndex].isClicked =
-          !updatedPosts[existingPostIndex].isClicked;
+        !updatedPosts[existingPostIndex].isClicked;
         return updatedPosts;
       } else {
         return [...prevLikedPosts, { post: id, isClicked: true }];
       }
     });
+    
   };
 
   const getPosts = () => {
@@ -110,7 +97,6 @@ const Posts = ({ isDark }) => {
   };
 
   useEffect(() => {
-    getUsers();
     getPosts();
     getUserByForeignKey();
   }, []);
@@ -256,8 +242,8 @@ const Posts = ({ isDark }) => {
                 <div>{post.content}</div>
               </div>
             </div>
-            <div className="ml-1 py-1">
-              <button className="m-3">
+            <div className="ml-1 py-1 flex">
+              <button className="m-3 flex justify-between w-[38px]">
                 <svg
                   onClick={() => handleLike(post.id)}
                   xmlns="http://www.w3.org/2000/svg"
@@ -289,6 +275,7 @@ const Posts = ({ isDark }) => {
                     stroke-linecap="round"
                   />
                 </svg>
+                <p>{post.id===postid && !clicked ? likeCount + 1 : likeCount }</p>
               </button>
               <button>
                 <svg

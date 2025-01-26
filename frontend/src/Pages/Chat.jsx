@@ -1,7 +1,5 @@
 // import Pusher from "pusher-js";
 // import Echo from "laravel-echo";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 // window.pusher = require("pusher-js");
 
@@ -22,8 +20,6 @@ import { useState } from "react";
 // });
 
 const Chat = () => {
-  const { id } = useParams();
-  const [msg, setmsg] = useState("");
 
   const handleSubmitMsg = (e) => {
     e.preventDefault();
@@ -34,7 +30,7 @@ const Chat = () => {
   return (
     <form onSubmit={handleSubmitMsg}>
       <div>Chat</div>
-      <input type="text" onChange={(e) => setmsg(e.target.value)} />
+      <input type="text"/>
     </form>
   );
 };

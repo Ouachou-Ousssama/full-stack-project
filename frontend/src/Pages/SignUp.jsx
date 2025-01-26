@@ -1,7 +1,9 @@
 import "../Styles/SignUp.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const SignUp = () => {
   const [signUp, setSignUp] = useState({
@@ -12,15 +14,20 @@ const SignUp = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8000/api/craeteGuests", {
-      firstName: signUp.firstName,
-      lastName: signUp.lastName,
-      dateOfBirth: signUp.dateBirth,
-      email: signUp.email,
-      password: signUp.password,
-    });
+    if (signUp.firstName && signUp.lastName && signUp.dateBirth && signUp.email && signUp.password) {
+      axios.post("http://localhost:8000/api/craeteGuests", {
+        firstName: signUp.firstName,
+        lastName: signUp.lastName,
+        dateOfBirth: signUp.dateBirth,
+        email: signUp.email,
+        password: signUp.password,
+      });
+      navigate("/");
+    }
   };
 
   const handleFirstNameChange = (e) => {
