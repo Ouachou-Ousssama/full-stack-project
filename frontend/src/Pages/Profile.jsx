@@ -9,6 +9,7 @@ const Profile = ({ setIsConnected, isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
   const [postid, setPostid] = useState("");
   const [likedPosts, setLikedPosts] = useState([]);
+  const [showupdateProdile, setShowupdateProdile] = useState(false);
   const [clicked, setClicked] = useState(false);
 
   const navigate = useNavigate();
@@ -32,6 +33,10 @@ const Profile = ({ setIsConnected, isDark }) => {
   } else if (isDark && clicked) {
     className = "#fff";
   }
+
+  const showUpdateModel = () => {
+    setShowupdateProdile(true);
+  };
 
   const handleLike = (id) => {
     setPostid(id);
@@ -131,7 +136,7 @@ const Profile = ({ setIsConnected, isDark }) => {
             </div>
             <div className="flex mr-2">
               {id == Users.id && (
-                <button className="font-bold text-[#1DA1F2] border border-solid border-[#1DA1F2] rounded-[20px] px-4">
+                <button className="font-bold text-[#1DA1F2] border border-solid border-[#1DA1F2] rounded-[20px] px-4" onClick={setShowupdateProdile}>
                   Edit Profile
                 </button>
               )}
