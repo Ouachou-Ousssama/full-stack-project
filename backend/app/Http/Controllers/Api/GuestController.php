@@ -70,6 +70,16 @@ class GuestController extends Controller
         //
     }
 
+    public function updateProfile(Request $request, $id){
+        $formFileds = $request->all();
+        $user = User::findorfail($id);
+        if ($user) {
+            $user->update($formFileds);
+            return response()->json($user);
+        }
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
     /**
      * Display the specified resource.
      */
