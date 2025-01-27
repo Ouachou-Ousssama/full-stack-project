@@ -52,4 +52,26 @@ class PostController extends Controller
         }
         return response()->json(['message' => 'There is no posts from this user'], 404);
     }
+    public function delete($id){
+        $post = Post::findorFail($id);
+        $post->delete();
+        return response()->json(
+            'Post Deleted Successfully'
+        );
+    }
+    public function getPostById($id){
+        $post = Post::findorFail($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        return response()->json($post);
+    }
+    public function update(Request $request,$id){
+        $post = Post::findorFail($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        $post->update($request->all());
+        return response()->json($post);
+    }
 }

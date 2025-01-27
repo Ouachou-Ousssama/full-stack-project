@@ -19,7 +19,7 @@ const AI = ({ setIsConnected }) => {
 
   const apiKey = process.env.REACT_APP_API_KEY;
   const apiSliced = apiKey.slice(1, -1);
-  console.log(apiKey);
+  //console.log(apiKey);
 
   const receiveDataFromChild = (data) => {
     setresp(data.data);

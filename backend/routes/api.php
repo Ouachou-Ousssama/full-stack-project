@@ -11,13 +11,18 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum'])->get('/getGuests',[GuestController::class,'index']);
-Route::middleware(['auth:sanctum'])->get('/getUserById/{id}',[GuestController::class,'getById']);
-Route::middleware(['auth:sanctum'])->get('/getPostsByForeignKey/{id}',[PostController::class,'getPostByForeignKey']);
-Route::middleware(['auth:sanctum'])->post('/createPost',[PostController::class,'create']);
-Route::middleware(['auth:sanctum'])->get('/getPosts',[PostController::class,'index']);
-Route::middleware(['auth:sanctum'])->get('/getByForeignKey',[PostController::class,'getByForeignKey']);
-Route::middleware(['auth:sanctum'])->get('/getPosts/{id}', [PostController::class,'getPostsByID']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/getGuests',[GuestController::class,'index']);
+    Route::get('/getUserById/{id}',[GuestController::class,'getById']);
+    Route::get('/getPostsByForeignKey/{id}',[PostController::class,'getPostByForeignKey']);
+    Route::post('/createPost',[PostController::class,'create']);
+    Route::get('/getPosts',[PostController::class,'index']);
+    Route::get('/getByForeignKey',[PostController::class,'getByForeignKey']);
+    Route::get('/getPosts/{id}', [PostController::class,'getPostsByID']);
+    Route::delete('/deletePost/{id}', [PostController::class,'delete']);
+    Route::get('/getPostById/{id}', [PostController::class,'getPostById']);
+    Route::put('/updatePost/{id}', [PostController::class,'update']);
+});
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);
 Route::post('/messages', [MessageController::class,'message']);
