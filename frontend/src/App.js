@@ -1,14 +1,13 @@
 import "./App.css";
-import { useState , lazy } from "react";
+import { useState, lazy } from "react";
 import { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-const Login = lazy(() => import("./Pages/Login")); 
+const Login = lazy(() => import("./Pages/Login"));
 const Home = lazy(() => import("./Pages/Home"));
 const NotFound = lazy(() => import("./Pages/NotFound"));
 const AI = lazy(() => import("./Pages/AI"));
-const SignUp = lazy(() => import("./Pages/SignUp"))
-const Chat = lazy(() => import("./Pages/Chat"))
-const Comment = lazy(() => import("./Components/Comment"))
+const SignUp = lazy(() => import("./Pages/SignUp"));
+const Chat = lazy(() => import("./Pages/Chat"));
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
@@ -20,10 +19,6 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<Login setIsConnected={setIsConnected} />} />
-          <Route
-            path="/comment/:id"
-            element={<Comment setIsConnected={setIsConnected} />}
-          />
           <Route
             path="/home"
             element={<Home setIsConnected={setIsConnected} />}
