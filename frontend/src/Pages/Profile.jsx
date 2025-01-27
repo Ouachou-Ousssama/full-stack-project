@@ -368,7 +368,13 @@ const Profile = ({ setIsConnected, isDark }) => {
         <div className="fixed inset-0 z-[9] flex items-center justify-center ">
           <div className="flex h-full w-full items-center justify-center">
             <div className="w-full h-full flex items-center justify-center ">
-              <div className="bg-white w-[50%] h-[50%] flex flex-col justify-between items-center">
+              <div
+                className={
+                  isDark
+                    ? "bg-white text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
+                    : "bg-[#171715] text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
+                }
+              >
                 <div className="flex justify-end w-[90%] mt-2">
                   <button onClick={handleClose}>
                     <svg
@@ -376,7 +382,7 @@ const Profile = ({ setIsConnected, isDark }) => {
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
-                      color="#000000"
+                      color={isDark ? "black" : "white"}
                       fill="none"
                     >
                       <path
@@ -396,12 +402,14 @@ const Profile = ({ setIsConnected, isDark }) => {
                 </div>
                 <input
                   type="text"
+                  className="bg-transparent focus:outline-none text-center"
                   placeholder="date of bitrth"
                   onChange={(e) =>
                     setDataForm({ ...dataForm, dateOfBirth: e.target.value })
                   }
                 />
                 <input
+                  className="bg-transparent focus:outline-none text-center"
                   type="text"
                   placeholder="first Name"
                   onChange={(e) =>
@@ -410,6 +418,7 @@ const Profile = ({ setIsConnected, isDark }) => {
                 />
                 <input
                   type="text"
+                  className="bg-transparent focus:outline-none text-center"
                   placeholder="last Name"
                   onChange={(e) =>
                     setDataForm({ ...dataForm, lastName: e.target.value })
@@ -417,6 +426,7 @@ const Profile = ({ setIsConnected, isDark }) => {
                 />
                 <input
                   type="password"
+                  className="bg-transparent focus:outline-none text-center"
                   placeholder="password"
                   onChange={(e) =>
                     setDataForm({ ...dataForm, password: e.target.value })
@@ -424,12 +434,18 @@ const Profile = ({ setIsConnected, isDark }) => {
                 />
                 <input
                   type="email"
+                  className="bg-transparent focus:outline-none text-center"
                   placeholder="mail"
                   onChange={(e) =>
                     setDataForm({ ...dataForm, email: e.target.value })
                   }
                 />
-                <button onClick={handleUpdate}>Update</button>
+                <button
+                  onClick={handleUpdate}
+                  className="text-center bg-[#1DA1F2] text-[#fff] py-2 px-4 rounded-lg"
+                >
+                  Update
+                </button>
               </div>
             </div>
           </div>
