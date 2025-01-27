@@ -178,6 +178,7 @@ const Home = ({ setIsConnected }) => {
             whileHover={{ scale: 1.1, x: 5, y: -5 }}
             className="flex items-center"
             onClick={LogOut}
+            name="logOut"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -345,7 +346,7 @@ const Home = ({ setIsConnected }) => {
                 : "bg-[#1C2733] w-[100%] h-full flex flex-col items-center bg-white justify-between rounded-b-2xl"
             }
           >
-            <h3
+            <h2
               className={
                 isDark
                   ? "text-white bg-[#283340] w-full py-2 rounded-t-2xl"
@@ -353,7 +354,7 @@ const Home = ({ setIsConnected }) => {
               }
             >
               <p className="ml-3 font-bold text-[20px]">Who To Follows</p>
-            </h3>
+            </h2>
             {filtredUsers.map((user, index) => (
               <>
                 <div
@@ -389,6 +390,7 @@ const Home = ({ setIsConnected }) => {
                       <motion.div whileHover={{ scale: 1.1 }}>
                         <button
                           onClick={() => setComponent(user.id)}
+                          name={user.id}
                           className="linkk"
                         >
                           <svg
@@ -444,7 +446,7 @@ const Home = ({ setIsConnected }) => {
                         </button>
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.1 }}>
-                        <Link to={`/home/chat/${user.id}`}>
+                        <Link to={`/home/chat/${user.id}`} name={user.id}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -477,7 +479,7 @@ const Home = ({ setIsConnected }) => {
           </div>
         </div>
         <div className="w-[90%] text-center mb-2">
-          <p className={isDark ? "text-white" : "text-black"}>
+          <p className={isDark ? "text-white" : "text-[#000]"}>
             Terms of Service Privacy Policy Cookie Policy Ads info More &copy;
             2021 Twitter, Inc.
           </p>

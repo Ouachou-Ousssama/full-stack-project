@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ProfilePic from "../images/profilee.webp";
 const Posts = ({ isDark }) => {
@@ -23,14 +22,11 @@ const Posts = ({ isDark }) => {
   const id = localStorage.getItem("id");
   const token = localStorage.getItem("token");
 
-  const navigate = useNavigate();
-
   const handleTweet = (e) => {
     setTweet(e.target.value);
   };
 
   const handleComment = (id) => {
-    navigate(`/comment/${id}`);
   };
 
   const handleFormSubmit = (e) => {
@@ -177,7 +173,7 @@ const Posts = ({ isDark }) => {
             Home
           </h2>
           <motion.div whileHover={{ scale: 1.2, rotate: 360 }} className="mr-3">
-            <Link to="/home/AskAi">
+            <Link to="/home/AskAi" name="AskAi">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -461,7 +457,7 @@ const Posts = ({ isDark }) => {
                   {post.id === postid && !clicked ? likeCount + 1 : likeCount}
                 </p>
               </button>
-              <button onClick={() => handleComment(post.id)}>
+              <button onClick={() => handleComment(post.id)} name={post.id}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
