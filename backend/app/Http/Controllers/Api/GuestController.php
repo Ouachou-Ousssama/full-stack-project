@@ -32,16 +32,32 @@ class GuestController extends Controller
      */
     public function create(Request $request)
     {
-        $formFileds = $request->all();
-        //dd($formFileds);
-        $user = User::create($formFileds);
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'dateOfBirth' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:7',
+        ]);
+        $user = User::create([
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
+            'dateOfBirth' => $request->dateOfBirth,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
         return response()->json($user);
     }
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
         $formFileds = $request->all();
-        //dd($formFileds);
+
         $user = User::where('email', $formFileds['email'])->where('password', $formFileds['password'])->first();
         if ($user) {
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -50,15 +66,6 @@ class GuestController extends Controller
                 'token' => $token
             ]);
         }
-
-        // $user = User::where('email', $formFileds['email'])->where('password', $formFileds['password'])->first();
-        // if ($user) {
-        //     // $token = $user->createToken('auth_token')->plainTextToken;
-        //     // return [
-        //     //     'user' => $user,
-        //     //     'token' => $token
-        //     // ];
-        // }
         throw new Error('User not found');
     }
 
@@ -71,10 +78,22 @@ class GuestController extends Controller
     }
 
     public function updateProfile(Request $request, $id){
-        $formFileds = $request->all();
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'dateOfBirth' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:7',
+        ]);
         $user = User::findorfail($id);
         if ($user) {
-            $user->update($formFileds);
+            $user->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'dateOfBirth' => $request->dateOfBirth,
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
             return response()->json($user);
         }
         return response()->json(['message' => 'User not found'], 404);

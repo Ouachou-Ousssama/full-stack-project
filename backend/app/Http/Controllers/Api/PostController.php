@@ -15,13 +15,18 @@ class PostController extends Controller
         return response()->json($posts);
     }
     public function create(Request $request){
-        $formFileds = $request->all();
-        $post = Post::create($formFileds);
+        $request->validate([
+            'user_id' => 'required',
+            'content' => 'required'
+        ]);
+        $post = Post::create([
+            'user_id' => $request->user_id,
+            'content' => $request->content
+        ]);
         return response()->json($post);
     }
 
     public function getPostByForeignKey($id){
-        $id = $id;
         $posts = Post::join('users', 'posts.user_id', '=', 'users.id')
              ->select('users.*')
              ->where('posts.user_id', $id)
@@ -32,8 +37,7 @@ class PostController extends Controller
         }
         return response()->json(['message' => 'There is no posts from this user'], 404);
     }
-    public function getByForeignKey(Request $request){
-        $id = $request->all();
+    public function getByForeignKey(){
         $posts = Post::join('users', 'posts.user_id', '=', 'users.id')
              ->select('users.firstName','users.lastName')
              ->orderBy('posts.id', 'asc')
@@ -41,7 +45,6 @@ class PostController extends Controller
         return response()->json($posts);
     }
     public function getPostsByID($id){
-        $id = $id;
         $posts = Post::join('users', 'posts.user_id', '=', 'users.id')
              ->select('posts.*')
              ->where('posts.user_id', $id)
@@ -67,11 +70,16 @@ class PostController extends Controller
         return response()->json($post);
     }
     public function update(Request $request,$id){
+        $request->validate([
+            'content' => 'required'
+        ]);
         $post = Post::findorFail($id);
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-        $post->update($request->all());
+        $post->update([
+            'content' => $request->content
+        ]);
         return response()->json($post);
     }
 }

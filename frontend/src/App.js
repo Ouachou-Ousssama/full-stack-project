@@ -6,11 +6,13 @@ import { BrowserRouter, Route , Routes } from 'react-router-dom';
 import NotFound from './Pages/NotFound';
 import AI from './Pages/AI';
 import SignUp from './Pages/SignUp';
-import Details from "./Pages/Details";
 import Chat from "./Pages/Chat";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
+
+  console.log(isConnected);
+  
 
   return (
     <BrowserRouter>
@@ -19,7 +21,6 @@ function App() {
           <Route path="/home" element={<Home setIsConnected={setIsConnected} />} />
           <Route path='/home/AskAi' element={<AI setIsConnected={setIsConnected} />} />
           <Route path="/home/chat/:id" element={<Chat setIsConnected={setIsConnected} />} />
-          <Route path="/home/:id" element={<Details setIsConnected={setIsConnected} />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

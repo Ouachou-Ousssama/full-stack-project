@@ -23,10 +23,14 @@ const Details = ({ setIsConnected, isDark, id }) => {
 
   let className = "#000";
 
-  if (!clicked) {
+  if (!isDark && !clicked) {
     className = "#000";
-  } else if (clicked) {
+  } else if (!isDark && clicked) {
     className = "#000";
+  } else if (isDark && !clicked) {
+    className = "#fff";
+  } else if (isDark && clicked) {
+    className = "#fff";
   }
 
   const handleLike = (id) => {
@@ -111,7 +115,7 @@ const Details = ({ setIsConnected, isDark, id }) => {
         >
           <img
             src={ProfilePic}
-            alt="image Profile"
+            alt={ProfilePic}
             className={
               isDark
                 ? "w-[13%] invert h-[60%] bg-red-400 rounded-full absolute top-[60%] left-[10px]"
@@ -242,7 +246,7 @@ const Details = ({ setIsConnected, isDark, id }) => {
             <div className="ml-2 flex items-center">
               <img
                 src={ProfilePic}
-                alt="image cl"
+                alt={ProfilePic}
                 className={
                   isDark
                     ? "w-9 h-9 rounded-full invert"
