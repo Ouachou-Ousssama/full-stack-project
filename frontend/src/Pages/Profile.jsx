@@ -401,7 +401,7 @@ const Profile = ({ setIsConnected, isDark }) => {
                   </button>
                 </div>
                 <input
-                  type="text"
+                  type="date"
                   className="bg-transparent focus:outline-none text-center"
                   placeholder="date of bitrth"
                   onChange={(e) =>

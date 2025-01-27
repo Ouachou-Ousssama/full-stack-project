@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import "../Styles/Login.css";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,38 +37,41 @@ const Login = ({ setIsConnected }) => {
   };
 
   return (
-    <div className="formContainer">
+    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#424035]">
       <motion.form
-        className="form"
+        className="w-[30%] bg-[#2d2b23] rounded-xl h-[75%] flex flex-col justify-evenly items-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="label welcome">Welcome 👋</h1>
-        <p className="label">Sign in to your account</p>
-        <label className="label">Login</label>
+        <h1 className="text-4xl text-white">Welcome 👋</h1>
+        <p className="text-white">Sign in to your account</p>
+        <label className="text-white">Login</label>
         <input
           type="text"
-          className="inppp"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
           placeholder="entrer your login"
           onChange={handleLogin}
         />
-        <label className="label">Passowrd</label>
+        <label className="text-white">Password</label>
         <input
           type="password"
-          className="inppp"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
           placeholder="entrer your password"
           onChange={handlePassword}
         />
         <motion.button
           whileHover={{ scale: 1.1 }}
-          className="login"
+          className="w-[80%] h-[10%] bg-[#ddcb89] text-black rounded-xl my-3 cursor-pointer"
           onClick={handleConnection}
         >
           Login
         </motion.button>
-        <div className="hr"></div>
-        <a className="Login" href="/signup">
+        <div className="w-[80%] bg-white h-px"></div>
+        <a
+          className="w-[70%] text-center py-2 bg-[#b5b09d] text-black rounded-xl my-3 no-underline"
+          href="/signup"
+        >
           Sign Up
         </a>
       </motion.form>

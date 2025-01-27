@@ -22,8 +22,9 @@ const Home = ({ setIsConnected }) => {
   //console.log(tweet);
   //console.log(userByForeign);
   const LogOut = () => {
-    setIsConnected(false);
     localStorage.removeItem("token");
+    setIsConnected(false);
+    navigate("/");
   };
 
   if (!token || iserr) {
