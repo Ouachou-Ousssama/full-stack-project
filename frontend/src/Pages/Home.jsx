@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ProfilePic from "../images/profilee.webp";
 import Posts from "../Components/Posts";
 import Profile from "./Profile";
+import Details from "./Details";
 
 const Home = ({ setIsConnected }) => {
   const [users, setUsers] = useState([]);
@@ -15,9 +16,8 @@ const Home = ({ setIsConnected }) => {
 
   const token = localStorage.getItem("token");
   console.log(isDark);
-  localStorage.setItem('theme',isDark ? 'dark' : 'light');
-  
-  
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
   const navigate = useNavigate();
   //console.log(tweet);
   //console.log(userByForeign);
@@ -42,6 +42,8 @@ const Home = ({ setIsConnected }) => {
       })
       .catch(() => setIserr(true));
   };
+
+  const idsOnly = users.map((user) => user.id);
 
   const filtredUsers = users.filter(
     (user) => user.id != localStorage.getItem("id")
@@ -82,7 +84,11 @@ const Home = ({ setIsConnected }) => {
   }, []);
 
   return (
-    <div className={isDark ? "w-full flex relative bg-[#1C2733]" : "w-full flex relative"}>
+    <div
+      className={
+        isDark ? "w-full flex relative bg-[#1C2733]" : "w-full flex relative"
+      }
+    >
       <div
         className={
           isDark
@@ -130,9 +136,7 @@ const Home = ({ setIsConnected }) => {
               onClick={() => setComponent(2)}
               whileHover={{ scale: 1.1, x: 10, y: -5 }}
             >
-              <div
-                className="flex items-center"
-              >
+              <div className="flex items-center">
                 <svg
                   className="w-5 h-5 mr-1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +209,18 @@ const Home = ({ setIsConnected }) => {
         <Profile setIsConnected={setIsConnected} isDark={isDark} />
       ) : component === 3 ? (
         <Posts setIsConnected={setIsConnected} isDark={isDark} />
-      ) : <Posts setIsConnected={setIsConnected} isDark={isDark} />}
+      ) : (
+        idsOnly.map(
+          (id) =>
+            id === component && (
+              <Details
+                setIsConnected={setIsConnected}
+                isDark={isDark}
+                id={component}
+              />
+            )
+        )
+      )}
       <div
         className={
           isDark
@@ -371,7 +386,10 @@ const Home = ({ setIsConnected }) => {
                     </div>
                     <div className="mr-2">
                       <motion.div whileHover={{ scale: 1.1 }}>
-                        <Link className="linkk" to={`/home/${user.id}`}>
+                        <button
+                          onClick={() => setComponent(user.id)}
+                          className="linkk"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -422,7 +440,7 @@ const Home = ({ setIsConnected }) => {
                               stroke-linecap="round"
                             />
                           </svg>
-                        </Link>
+                        </button>
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.1 }}>
                         <Link to={`/home/chat/${user.id}`}>
