@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ProfilePic from "../images/profilee.webp";
 const Posts = ({ isDark }) => {
@@ -20,10 +21,16 @@ const Posts = ({ isDark }) => {
   const [showUpdateModel, setShowUpdateModel] = useState(false);
 
   const id = localStorage.getItem("id");
-
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
+
   const handleTweet = (e) => {
     setTweet(e.target.value);
+  };
+
+  const handleComment = (id) => {
+    navigate(`/comment/${id}`);
   };
 
   const handleFormSubmit = (e) => {
@@ -147,7 +154,7 @@ const Posts = ({ isDark }) => {
       })
       .then((res) => {
         setPosts(res.data);
-        //console.log(res.data[0]);
+        console.log(res.data);
       });
   };
 
@@ -296,7 +303,17 @@ const Posts = ({ isDark }) => {
                         userByForeign[index].lastName}
                   </div>
                   <div>
-                    {<p className={showUpdateModel && post.id === opId ? "hidden" : "block"}>{post.content}</p>}
+                    {
+                      <p
+                        className={
+                          showUpdateModel && post.id === opId
+                            ? "hidden"
+                            : "block"
+                        }
+                      >
+                        {post.content}
+                      </p>
+                    }
                     {showUpdateModel && post.id === opId && (
                       <div className="flex translate-y-2">
                         <input
@@ -444,7 +461,7 @@ const Posts = ({ isDark }) => {
                   {post.id === postid && !clicked ? likeCount + 1 : likeCount}
                 </p>
               </button>
-              <button>
+              <button onClick={() => handleComment(post.id)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
