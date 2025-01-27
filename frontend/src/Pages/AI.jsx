@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import Header from "../Components/Header";
-import Section from "../Components/Sections";
+import React, { useState , lazy } from "react";
 import { useNavigate } from "react-router-dom";
-import Gemi from "../Components/Gemi";
 import "../Styles/AI.css";
+const Header = lazy(() => import("../Components/Header"));
+const Section = lazy(() => import("../Components/Sections")); 
+const Gemi = lazy(() => import("../Components/Gemi")); 
 
 const AI = ({ setIsConnected }) => {
   const [resp, setresp] = useState();

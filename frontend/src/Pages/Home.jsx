@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy } from "react";
 import ProfilePic from "../images/profilee.webp";
-import Posts from "../Components/Posts";
-import Profile from "./Profile";
-import Details from "./Details";
+const Posts = lazy(() => import("../Components/Posts"));
+const Profile = lazy(() => import("./Profile"));
+const Details = lazy(() => import("./Details"));
 
 const Home = ({ setIsConnected }) => {
   const [users, setUsers] = useState([]);
