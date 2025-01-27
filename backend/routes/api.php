@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/deletePost/{id}', [PostController::class,'delete']);
     Route::get('/getPostById/{id}', [PostController::class,'getPostById']);
     Route::put('/updatePost/{id}', [PostController::class,'update']);
+    Route::put('/updateProfile/{id}', [GuestController::class,'updateProfile']);
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);

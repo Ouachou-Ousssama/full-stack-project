@@ -9,6 +9,12 @@ const Profile = ({ setIsConnected, isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
   const [postid, setPostid] = useState("");
   const [likedPosts, setLikedPosts] = useState([]);
+  const [dataForm, setDataForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
   const [showupdateProdile, setShowupdateProdile] = useState(false);
   const [clicked, setClicked] = useState(false);
 
@@ -38,6 +44,24 @@ const Profile = ({ setIsConnected, isDark }) => {
     setShowupdateProdile(true);
   };
 
+  const handleClose = () => {
+    setShowupdateProdile(false);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:8000/api/updateProfile/${id}`, dataForm, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        getUsersPosts();
+      });
+  };
+
+  console.log(dataForm);
   const handleLike = (id) => {
     setPostid(id);
     setClicked((prev) => !prev);
@@ -104,7 +128,13 @@ const Profile = ({ setIsConnected, isDark }) => {
   }, []);
 
   return (
-    <div className="w-[65%] h-auto flex flex-col">
+    <div
+      className={
+        showupdateProdile
+          ? "w-[65%] h-auto flex flex-col blur-xm"
+          : "w-[65%] h-auto flex flex-col"
+      }
+    >
       <div
         className={
           isDark
@@ -136,7 +166,10 @@ const Profile = ({ setIsConnected, isDark }) => {
             </div>
             <div className="flex mr-2">
               {id == Users.id && (
-                <button className="font-bold text-[#1DA1F2] border border-solid border-[#1DA1F2] rounded-[20px] px-4" onClick={setShowupdateProdile}>
+                <button
+                  className="font-bold text-[#1DA1F2] border border-solid border-[#1DA1F2] rounded-[20px] px-4"
+                  onClick={showUpdateModel}
+                >
                   Edit Profile
                 </button>
               )}
@@ -331,6 +364,77 @@ const Profile = ({ setIsConnected, isDark }) => {
           </div>
         ))}
       </div>
+      {showupdateProdile && (
+        <div className="fixed inset-0 z-[9] flex items-center justify-center ">
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center ">
+              <div className="bg-white w-[50%] h-[50%] flex flex-col justify-between items-center">
+                <div className="flex justify-end w-[90%] mt-2">
+                  <button onClick={handleClose}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      color="#000000"
+                      fill="none"
+                    >
+                      <path
+                        d="M14.9994 15L9 9M9.00064 15L15 9"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  placeholder="date of bitrth"
+                  onChange={(e) =>
+                    setDataForm({ ...dataForm, dateOfBirth: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="first Name"
+                  onChange={(e) =>
+                    setDataForm({ ...dataForm, firstName: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="last Name"
+                  onChange={(e) =>
+                    setDataForm({ ...dataForm, lastName: e.target.value })
+                  }
+                />
+                <input
+                  type="password"
+                  placeholder="password"
+                  onChange={(e) =>
+                    setDataForm({ ...dataForm, password: e.target.value })
+                  }
+                />
+                <input
+                  type="email"
+                  placeholder="mail"
+                  onChange={(e) =>
+                    setDataForm({ ...dataForm, email: e.target.value })
+                  }
+                />
+                <button onClick={handleUpdate}>Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
