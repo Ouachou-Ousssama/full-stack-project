@@ -5,13 +5,12 @@ import { Link } from "react-router-dom";
 import ProfilePic from "../images/profilee.webp";
 const Posts = ({ isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
-  const [likeCount, setLikeCount] = useState(0);
   const [tweet, setTweet] = useState("");
   const [opId, setOpId] = useState(null);
   const [operations, setOperations] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [postid, setPostid] = useState("");
-  const [likedPosts, setLikedPosts] = useState([]);
+  const [likedPosts, setLikedPosts] = useState();
   const [posts, setPosts] = useState([]);
   const [postById, setPostById] = useState([]);
   const [formUpdate, setFormUpdate] = useState({
@@ -26,8 +25,7 @@ const Posts = ({ isDark }) => {
     setTweet(e.target.value);
   };
 
-  const handleComment = (id) => {
-  };
+  const handleComment = (id) => {};
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -121,25 +119,7 @@ const Posts = ({ isDark }) => {
     setUserByForeign(res2);
   };
 
-  const handleLike = (id) => {
-    setPostid(id);
-    setClicked((prev) => !prev);
-
-    setLikedPosts((prevLikedPosts) => {
-      const existingPostIndex = prevLikedPosts.findIndex(
-        (post) => post.post === id
-      );
-
-      if (existingPostIndex !== -1) {
-        const updatedPosts = [...prevLikedPosts];
-        updatedPosts[existingPostIndex].isClicked =
-          !updatedPosts[existingPostIndex].isClicked;
-        return updatedPosts;
-      } else {
-        return [...prevLikedPosts, { post: id, isClicked: true }];
-      }
-    });
-  };
+  //console.log(clicked);
 
   const getPosts = () => {
     axios
@@ -150,8 +130,43 @@ const Posts = ({ isDark }) => {
       })
       .then((res) => {
         setPosts(res.data);
-        console.log(res.data);
       });
+  };
+
+  useEffect(() => {
+    const myPosts = posts.map((post) => ({
+      id: post.id,
+      like_count: post.like_count,
+      is_liked: false,
+    }));
+    setLikedPosts(myPosts);
+  }, [posts]);
+  //console.log(likedPosts);
+
+  const handleLike = (id) => {
+    likedPosts.map((post) => {
+      if (post.id === id) {
+        post.is_liked = !post.is_liked;
+        axios.put(
+          `http://localhost:8000/api/updateLikesCount/${id}`,
+          {
+            like_count: post.like_count,
+            is_liked: post.is_liked,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -428,22 +443,8 @@ const Posts = ({ isDark }) => {
                   viewBox="0 0 24 24"
                   width="24"
                   height="24"
-                  color={
-                    likedPosts.some(
-                      (likedPost) =>
-                        likedPost.post === post.id && likedPost.isClicked
-                    )
-                      ? "red"
-                      : "none"
-                  }
-                  fill={
-                    likedPosts.some(
-                      (likedPost) =>
-                        likedPost.post === post.id && likedPost.isClicked
-                    )
-                      ? "red"
-                      : "none"
-                  }
+                  fill="none"
+                  color={isDark ? "#fff" : "#000"}
                   className={clicked && postid === post.id ? "border-0" : ""}
                 >
                   <path
@@ -453,9 +454,7 @@ const Posts = ({ isDark }) => {
                     stroke-linecap="round"
                   />
                 </svg>
-                <p>
-                  {post.id === postid && !clicked ? likeCount + 1 : likeCount}
-                </p>
+                <p>{post.like_count}</p>
               </button>
               <button onClick={() => handleComment(post.id)} name={post.id}>
                 <svg

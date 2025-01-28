@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getPostById/{id}', [PostController::class,'getPostById']);
     Route::put('/updatePost/{id}', [PostController::class,'update']);
     Route::put('/updateProfile/{id}', [GuestController::class,'updateProfile']);
+    Route::put('/updateLikesCount/{id}',[PostController::class,'updateLikesCount']);
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);

@@ -82,4 +82,24 @@ class PostController extends Controller
         ]);
         return response()->json($post);
     }
+    public function updateLikesCount(Request $request,$id){
+        $request->validate([
+            'like_count' => 'required',
+            'is_liked' => 'required'
+        ]);
+        $post = Post::findorfail($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        if ($request->is_liked) {
+            $post->update([
+                'like_count' => $post->like_count + 1
+            ]);
+        }else{
+            $post->update([
+                'like_count' => $post->like_count - 1
+            ]);
+        }
+        return response()->json($post);
+    }
 }
