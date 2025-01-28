@@ -57,17 +57,18 @@ const Gemi = ({ sendDataToParent, apiKey }) => {
   }, [data]);
 
   return (
-    <div className="gemi-container">
-      <div className="gemi">
+    <div className="w-full h-[20%] flex justify-center items-center relative">
+      <div className="w-[90%] flex justify-center items-center">
         <input
           type="text"
           name="inp"
+          className="w-[90%] rounded-[18px] bg-[#8c8c8c1a] color-[#424242] p-[15px]"
           onChange={handleINp}
           onKeyDown={handleRes}
           placeholder="type your prompt here"
         />
       </div>
-      <img className="footer-img" src={logo} alt="img2" />
+      <img className="absolute bottom-0 left-[-20%] w-[700px] h-[700px] z-[-1]" src={logo} alt="img2" />
     </div>
   );
 };

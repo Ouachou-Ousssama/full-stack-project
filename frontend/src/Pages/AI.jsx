@@ -1,6 +1,5 @@
 import React, { useState , lazy } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/AI.css";
 const Header = lazy(() => import("../Components/Header"));
 const Section = lazy(() => import("../Components/Sections")); 
 const Gemi = lazy(() => import("../Components/Gemi")); 
@@ -27,7 +26,7 @@ const AI = ({ setIsConnected }) => {
   };
 
   return (
-    <div className="app-container">
+    <div className="flex h-screen flex-col items-center justify-between">
       <Header />
       <Section resp={resp} sub={subf} />
       <Gemi sendDataToParent={receiveDataFromChild} apiKey={apiSliced} />
