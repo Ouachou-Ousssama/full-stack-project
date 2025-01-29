@@ -627,8 +627,8 @@ const Posts = ({ isDark }) => {
                 <div
                   className={
                     isDark
-                      ? "w-full flex flex-col py-2 border border-solid border-[#000]"
-                      : "w-full flex flex-col py-2 border border-solid border-[#ebeef0]"
+                      ? "w-full flex flex-col py-4 border border-solid border-[#000]"
+                      : "w-full flex flex-col py-4 border border-solid border-[#ebeef0]"
                   }
                   key={index}
                 >
