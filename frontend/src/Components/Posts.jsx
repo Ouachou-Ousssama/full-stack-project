@@ -193,7 +193,7 @@ const Posts = ({ isDark }) => {
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
-      comment_count : post.comment_count,
+      comment_count: post.comment_count,
       like_count: post.like_count,
       is_liked: false,
     }));
@@ -521,7 +521,11 @@ const Posts = ({ isDark }) => {
                 </svg>
                 <p>{post.like_count}</p>
               </button>
-              <button className="m-3 flex justify-between w-[38px]" onClick={() => handleComment(post.id)} name={post.id}>
+              <button
+                className="m-3 flex justify-between w-[38px]"
+                onClick={() => handleComment(post.id)}
+                name={post.id}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -567,14 +571,14 @@ const Posts = ({ isDark }) => {
                     : "w-full border border-solid border-[#ebeef0] py-2"
                 }
               >
-                <div className="ml-4">
+                <div className="ml-4" >
                   <button onClick={() => setShowCommentModel(false)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
-                      color="#000000"
+                      color={isDark ? "#fff" : "#000"}
                       fill="none"
                     >
                       <path
@@ -605,11 +609,11 @@ const Posts = ({ isDark }) => {
                           ? "w-full p-2 ml-2 text-wrap rounded-md hover:border-none hover:outline-none focus:outline-none bg-transparent text-white"
                           : "w-full p-2 ml-2 text-wrap rounded-md hover:border-none hover:outline-none focus:outline-none "
                       }
-                      placeholder="what's happening"
+                      placeholder="Insert A New Comment"
                       onChange={(e) => setCommentContent(e.target.value)}
                     />
                   </div>
-                  <div className="flex justify-end mr-2">
+                  <div className="flex justify-end mr-2 mb-1">
                     <button
                       className="flex items-center justify-center h-10 px-4 text-sm font-semibold text-white bg-[#1D9BF0] rounded-full"
                       onClick={handleCommentSubmit}
@@ -628,7 +632,13 @@ const Posts = ({ isDark }) => {
                   }
                   key={index}
                 >
-                  <div className="ml-2 flex items-center w-[98%] justify-between">
+                  <div
+                    className={
+                      isDark
+                        ? "ml-2 flex items-center w-[98%] justify-between text-[#fff]"
+                        : "ml-2 flex items-center w-[98%] justify-between"
+                    }
+                  >
                     <div className="ml-2 flex items-center ">
                       <img
                         src={ProfilePic}
