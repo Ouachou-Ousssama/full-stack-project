@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
+import '../Styles/Gemi.css';
 import ProfilePic from "../images/profilee.webp";
 const Posts = lazy(() => import("../Components/Posts"));
 const Profile = lazy(() => import("./Profile"));
@@ -15,7 +16,7 @@ const Home = ({ setIsConnected }) => {
   const [component, setComponent] = useState(1);
 
   const token = localStorage.getItem("token");
-  console.log(isDark);
+  //console.log(isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
 
   const navigate = useNavigate();
