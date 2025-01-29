@@ -214,7 +214,7 @@ const Home = ({ setIsConnected }) => {
       ) : (
         idsOnly.map(
           (id) =>
-            id === component && (
+            id == component && (
               <Details
                 setIsConnected={setIsConnected}
                 isDark={isDark}
