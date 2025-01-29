@@ -34,8 +34,7 @@ const Posts = ({ isDark }) => {
     setShowCommentModel(true);
     getCommentsById(id);
   };
-  
-  
+
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     axios.post(
@@ -62,15 +61,15 @@ const Posts = ({ isDark }) => {
       })
       .then((res) => {
         setCommentsById(res.data);
-        console.log(res.data);
+        //console.log(res.data);
       });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     axios
-    .post(
-      "http://localhost:8000/api/createPost",
+      .post(
+        "http://localhost:8000/api/createPost",
         {
           user_id: id,
           content: tweet,
@@ -106,8 +105,8 @@ const Posts = ({ isDark }) => {
   const handleEdit = (id) => {
     setShowUpdateModel(true);
     axios
-    .get(`http://localhost:8000/api/getPostById/${id}`, {
-      headers: {
+      .get(`http://localhost:8000/api/getPostById/${id}`, {
+        headers: {
           Authorization: `Bearer ${token}`,
         },
       })
@@ -171,7 +170,7 @@ const Posts = ({ isDark }) => {
         setPosts(res.data);
       });
   };
-  
+
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
@@ -186,7 +185,7 @@ const Posts = ({ isDark }) => {
   //const likedPostss = localStorage.getItem("likedPosts");
   //const likedPostss2 = likedPostss ? JSON.parse(likedPostss) : [];
   //console.log(likedPostss2);
-  
+
   const handleLike = (id) => {
     likedPosts.map((post) => {
       if (post.id === id) {
@@ -213,8 +212,8 @@ const Posts = ({ isDark }) => {
       }
     });
   };
-  
-  console.log(commentsById);
+
+  //console.log(commentsById);
   useEffect(() => {
     getPosts();
     getUserByForeignKey();
@@ -533,7 +532,7 @@ const Posts = ({ isDark }) => {
       {showCommentModel && (
         <div className="fixed inset-0 z-[9] flex items-center justify-center">
           <div className="flex h-full w-full items-center justify-center">
-            <div className="w-[65%] translate-x-[-4%] h-[100%] bg-[#fff] border-l-[1px] flex flex-col items-center">
+            <div className="w-[65%] translate-x-[-4%] h-[100%] bg-[#fff] border-l-[1px] flex flex-col items-center overflow-auto">
               <button onClick={() => setShowCommentModel(false)}>
                 {commentId}
                 <svg
@@ -565,6 +564,43 @@ const Posts = ({ isDark }) => {
                 onChange={(e) => setCommentContent(e.target.value)}
               />
               <button onClick={handleCommentSubmit}>Comment</button>
+              {commentsById.map((post, index) => (
+                <div
+                  className={
+                    isDark
+                      ? "w-full flex flex-col py-2 border border-solid border-[#000]"
+                      : "w-full flex flex-col py-2 border border-solid border-[#ebeef0]"
+                  }
+                  key={index}
+                >
+                  <div className="ml-2 flex items-center w-[98%] justify-between">
+                    <div className="ml-2 flex items-center ">
+                      <img
+                        src={ProfilePic}
+                        alt="image cl"
+                        className={
+                          isDark
+                            ? "w-9 h-9 rounded-full invert"
+                            : "w-9 h-9 rounded-full"
+                        }
+                      />
+                      <div className="ml-2">
+                        <div className="font-bold text-[20px]">
+                          {
+                            post.firstName + " " + post.lastName
+                          }
+                        </div>
+                        <div>
+                          
+                              {post.content}
+                            
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
