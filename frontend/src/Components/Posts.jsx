@@ -13,6 +13,10 @@ const Posts = ({ isDark }) => {
   const [likedPosts, setLikedPosts] = useState();
   const [posts, setPosts] = useState([]);
   const [postById, setPostById] = useState([]);
+  const [showCommentModel, setShowCommentModel] = useState(false);
+  const [commentId, setCommentId] = useState();
+  const [commentsById, setCommentsById] = useState([]);
+  const [commentContent, setCommentContent] = useState("");
   const [formUpdate, setFormUpdate] = useState({
     content: "",
   });
@@ -25,13 +29,48 @@ const Posts = ({ isDark }) => {
     setTweet(e.target.value);
   };
 
-  const handleComment = (id) => {};
+  const handleComment = (id) => {
+    setCommentId(id);
+    setShowCommentModel(true);
+    getCommentsById(id);
+  };
+  
+  
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    axios.post(
+      "http://localhost:8000/api/createComment",
+      {
+        user_id: id,
+        post_id: commentId,
+        content: commentContent,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
+
+  const getCommentsById = (id) => {
+    axios
+      .get(`http://localhost:8000/api/getComments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setCommentsById(res.data);
+        console.log(res.data);
+      });
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        "http://localhost:8000/api/createPost",
+    .post(
+      "http://localhost:8000/api/createPost",
         {
           user_id: id,
           content: tweet,
@@ -67,8 +106,8 @@ const Posts = ({ isDark }) => {
   const handleEdit = (id) => {
     setShowUpdateModel(true);
     axios
-      .get(`http://localhost:8000/api/getPostById/${id}`, {
-        headers: {
+    .get(`http://localhost:8000/api/getPostById/${id}`, {
+      headers: {
           Authorization: `Bearer ${token}`,
         },
       })
@@ -132,7 +171,7 @@ const Posts = ({ isDark }) => {
         setPosts(res.data);
       });
   };
-
+  
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
@@ -142,33 +181,40 @@ const Posts = ({ isDark }) => {
     setLikedPosts(myPosts);
   }, [posts]);
   //console.log(likedPosts);
-
+  localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+  //setLikedPosts(localStorage.getItem(JSON.stringify("likedPosts")));
+  //const likedPostss = localStorage.getItem("likedPosts");
+  //const likedPostss2 = likedPostss ? JSON.parse(likedPostss) : [];
+  //console.log(likedPostss2);
+  
   const handleLike = (id) => {
     likedPosts.map((post) => {
       if (post.id === id) {
         post.is_liked = !post.is_liked;
-        axios.put(
-          `http://localhost:8000/api/updateLikesCount/${id}`,
-          {
-            like_count: post.like_count,
-            is_liked: post.is_liked,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+        axios
+          .put(
+            `http://localhost:8000/api/updateLikesCount/${id}`,
+            {
+              like_count: post.like_count,
+              is_liked: post.is_liked,
             },
-          }
-        )
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then(() => {
+            getPosts();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     });
   };
-
+  
+  console.log(commentsById);
   useEffect(() => {
     getPosts();
     getUserByForeignKey();
@@ -484,6 +530,45 @@ const Posts = ({ isDark }) => {
           </div>
         ))}
       </div>
+      {showCommentModel && (
+        <div className="fixed inset-0 z-[9] flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="w-[65%] translate-x-[-4%] h-[100%] bg-[#fff] border-l-[1px] flex flex-col items-center">
+              <button onClick={() => setShowCommentModel(false)}>
+                {commentId}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  color="#000000"
+                  fill="none"
+                >
+                  <path
+                    d="M14.9994 15L9 9M9.00064 15L15 9"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              </button>
+              <input
+                type="text"
+                className="bg-transparent"
+                placeholder="Enter your comment"
+                onChange={(e) => setCommentContent(e.target.value)}
+              />
+              <button onClick={handleCommentSubmit}>Comment</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GuestController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\MessageController;
+use App\Models\Comment;
 use App\Models\Post;
 
 Route::get('/user', function (Request $request) {
@@ -24,6 +26,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/updatePost/{id}', [PostController::class,'update']);
     Route::put('/updateProfile/{id}', [GuestController::class,'updateProfile']);
     Route::put('/updateLikesCount/{id}',[PostController::class,'updateLikesCount']);
+    Route::get('/getComments/{id}', [CommentController::class,'getComments']);
+    Route::post('/createComment', [CommentController::class,'createComment']);
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);
