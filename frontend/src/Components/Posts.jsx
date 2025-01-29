@@ -50,6 +50,25 @@ const Posts = ({ isDark }) => {
         },
       }
     );
+    likedPosts.map((post) => {
+      if (post.id === commentId) {
+        axios
+          .put(
+            `http://localhost:8000/api/updateCommentCount/${commentId}`,
+            {
+              comment_count: post.comment_count,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then(() => {
+            getPosts();
+          });
+      }
+    });
   };
 
   const getCommentsById = (id) => {
@@ -174,14 +193,15 @@ const Posts = ({ isDark }) => {
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
+      comment_count : post.comment_count,
       like_count: post.like_count,
       is_liked: false,
     }));
     setLikedPosts(myPosts);
   }, [posts]);
-  //console.log(likedPosts);
   localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
   //setLikedPosts(localStorage.getItem(JSON.stringify("likedPosts")));
+  //console.log(likedPosts);
   //const likedPostss = localStorage.getItem("likedPosts");
   //const likedPostss2 = likedPostss ? JSON.parse(likedPostss) : [];
   //console.log(likedPostss2);
@@ -501,7 +521,7 @@ const Posts = ({ isDark }) => {
                 </svg>
                 <p>{post.like_count}</p>
               </button>
-              <button onClick={() => handleComment(post.id)} name={post.id}>
+              <button className="m-3 flex justify-between w-[38px]" onClick={() => handleComment(post.id)} name={post.id}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -524,6 +544,7 @@ const Posts = ({ isDark }) => {
                     stroke-linecap="round"
                   />
                 </svg>
+                <p>{post.comment_count}</p>
               </button>
             </div>
           </div>
@@ -532,38 +553,72 @@ const Posts = ({ isDark }) => {
       {showCommentModel && (
         <div className="fixed inset-0 z-[9] flex items-center justify-center">
           <div className="flex h-full w-full items-center justify-center">
-            <div className="w-[65%] translate-x-[-4%] h-[100%] bg-[#fff] border-l-[1px] flex flex-col items-center overflow-auto">
-              <button onClick={() => setShowCommentModel(false)}>
-                {commentId}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  color="#000000"
-                  fill="none"
-                >
-                  <path
-                    d="M14.9994 15L9 9M9.00064 15L15 9"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-              <input
-                type="text"
-                className="bg-transparent"
-                placeholder="Enter your comment"
-                onChange={(e) => setCommentContent(e.target.value)}
-              />
-              <button onClick={handleCommentSubmit}>Comment</button>
+            <div
+              className={
+                isDark
+                  ? "w-[65%] translate-x-[-4%] h-[100%] bg-[#1C2733] border-[1px] border-[#1C2733] flex flex-col items-center overflow-auto"
+                  : "w-[65%] translate-x-[-4%] h-[100%] bg-[#fff] border-[1px] flex flex-col items-center overflow-auto"
+              }
+            >
+              <div
+                className={
+                  isDark
+                    ? "w-full border border-solid border-[#000] py-2 bg-[#1C2733]"
+                    : "w-full border border-solid border-[#ebeef0] py-2"
+                }
+              >
+                <div className="ml-4">
+                  <button onClick={() => setShowCommentModel(false)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      color="#000000"
+                      fill="none"
+                    >
+                      <path
+                        d="M4.80823 9.44118L6.77353 7.46899C8.18956 6.04799 8.74462 5.28357 9.51139 5.55381C10.4675 5.89077 10.1528 8.01692 10.1528 8.73471C11.6393 8.73471 13.1848 8.60259 14.6502 8.87787C19.4874 9.78664 21 13.7153 21 18C19.6309 17.0302 18.2632 15.997 16.6177 15.5476C14.5636 14.9865 12.2696 15.2542 10.1528 15.2542C10.1528 15.972 10.4675 18.0982 9.51139 18.4351C8.64251 18.7413 8.18956 17.9409 6.77353 16.5199L4.80823 14.5477C3.60275 13.338 3 12.7332 3 11.9945C3 11.2558 3.60275 10.6509 4.80823 9.44118Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div>
+                  <div className="flex ml-4 mt-2 items-center">
+                    <img
+                      src={ProfilePic}
+                      alt="image c"
+                      className={
+                        isDark
+                          ? "w-9 h-9 rounded-full invert"
+                          : "w-9 h-9 rounded-full"
+                      }
+                    />
+                    <input
+                      type="text"
+                      className={
+                        isDark
+                          ? "w-full p-2 ml-2 text-wrap rounded-md hover:border-none hover:outline-none focus:outline-none bg-transparent text-white"
+                          : "w-full p-2 ml-2 text-wrap rounded-md hover:border-none hover:outline-none focus:outline-none "
+                      }
+                      placeholder="what's happening"
+                      onChange={(e) => setCommentContent(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex justify-end mr-2">
+                    <button
+                      className="flex items-center justify-center h-10 px-4 text-sm font-semibold text-white bg-[#1D9BF0] rounded-full"
+                      onClick={handleCommentSubmit}
+                    >
+                      Comment
+                    </button>
+                  </div>
+                </div>
+              </div>
               {commentsById.map((post, index) => (
                 <div
                   className={
@@ -586,16 +641,9 @@ const Posts = ({ isDark }) => {
                       />
                       <div className="ml-2">
                         <div className="font-bold text-[20px]">
-                          {
-                            post.firstName + " " + post.lastName
-                          }
+                          {post.firstName + " " + post.lastName}
                         </div>
-                        <div>
-                          
-                              {post.content}
-                            
-                          
-                        </div>
+                        <div>{post.content}</div>
                       </div>
                     </div>
                   </div>

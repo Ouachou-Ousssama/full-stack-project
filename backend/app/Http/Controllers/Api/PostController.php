@@ -102,4 +102,17 @@ class PostController extends Controller
         }
         return response()->json($post);
     }
+    public function updateCommentCount(Request $request,$id){
+        $request->validate([
+            'comment_count' => 'required',
+        ]);
+        $post = Post::findorfail($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        $post->update([
+            'comment_count' => $post->comment_count + 1
+        ]);
+        return response()->json($post);
+    }
 }

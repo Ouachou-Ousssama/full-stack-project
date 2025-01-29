@@ -10,6 +10,7 @@ class Post extends Model
         'user_id',
         'content',
         'like_count',
+        'comment_count',
     ];
 
     public function user()
