@@ -369,8 +369,8 @@ const Home = ({ setIsConnected }) => {
                   <div
                     className={
                       isDark
-                        ? "flex justify-between w-[90%] items-center bg-[#283340] py-5 text-white border-y border-black"
-                        : "flex justify-between w-[90%] py-5 text-white items-center border-y border-gray-300"
+                        ? "flex justify-between w-[90%] items-center bg-[#283340] py-2 text-white border-y border-black"
+                        : "flex justify-between w-[90%] py-2 text-white items-center border-y border-gray-300"
                     }
                   >
                     <img

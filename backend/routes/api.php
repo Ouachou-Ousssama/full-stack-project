@@ -4,8 +4,9 @@ use App\Http\Controllers\Api\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GuestController;
+use App\Http\Controllers\Api\MessageController as ApiMessageController;
 use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Api\MessageController;
 use App\Models\Comment;
 use App\Models\Post;
 
@@ -29,10 +30,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getComments/{id}', [CommentController::class,'getComments']);
     Route::post('/createComment', [CommentController::class,'createComment']);
     Route::put('/updateCommentCount/{id}',[PostController::class,'updateCommentCount']);
+    Route::post('/createMessage',[MessageController::class,'message']);
+    Route::get('/getMessages',[MessageController::class,'getMessages']);
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);
-Route::post('/messages', [MessageController::class,'message']);
 
 
 

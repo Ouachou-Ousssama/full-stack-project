@@ -17,27 +17,31 @@ class Message implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
+
     public $message;
-    public function __construct($message)
+    public $username;
+    public function __construct($username,$message)
     {
+        $this->username = $username;
         $this->message = $message;
     }
+    
+        //
+    
 
     /**
      * Get the channels the event should broadcast on.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
-    {
-        return new Channel('chat.' . $this->message->chat_id);
-    }
-
-    public function broadcastWith()
+    public function broadcastOn(): array
     {
         return [
-            'message' => $this->message->content,
-            'user' => $this->message->user->name,
+            new PrivateChannel('chat'),
         ];
     }
+    public function broadcastAs()
+  {
+      return 'message';
+  }
 }
