@@ -14,12 +14,10 @@ public function up()
         $table->unsignedBigInteger('follower_id');
         $table->unsignedBigInteger('followed_id'); 
         $table->timestamps();
-
         
         $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('followed_id')->references('id')->on('users')->onDelete('cascade');
 
-        
         $table->unique(['follower_id', 'followed_id']);
     });
 }
