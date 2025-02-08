@@ -3,6 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProfilePic from "../images/profilee.webp";
+import { format } from 'date-fns';
+
 const Posts = ({ isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
   const [tweet, setTweet] = useState("");
@@ -100,7 +102,8 @@ const Posts = ({ isDark }) => {
         }
       )
       .then(() => {
-        window.location.reload();
+        getPosts();
+        getUserByForeignKey();
       });
   };
 
@@ -372,23 +375,29 @@ const Posts = ({ isDark }) => {
                   }
                 />
                 <div className="ml-2">
-                  <div className="font-bold text-[20px]">
-                    {userByForeign[index] &&
-                      userByForeign[index].firstName +
-                        " " +
-                        userByForeign[index].lastName}
+                  <div className="flex items-center">
+                    <div className="font-bold text-[20px]">
+                      {userByForeign[index] &&
+                        userByForeign[index].firstName +
+                          " " +
+                          userByForeign[index].lastName}
+                    </div>
+                    <div className="ml-2">{format(new Date(post.created_at), 'PPpp')}</div>
                   </div>
                   <div>
                     {
-                      <p
-                        className={
-                          showUpdateModel && post.id === opId
-                            ? "hidden"
-                            : "block"
-                        }
-                      >
-                        {post.content}
-                      </p>
+                      <>
+                      
+                        <p
+                          className={
+                            showUpdateModel && post.id === opId
+                              ? "hidden"
+                              : "block"
+                          }
+                        >
+                          {post.content}
+                        </p>
+                      </>
                     }
                     {showUpdateModel && post.id === opId && (
                       <div className="flex translate-y-2">
