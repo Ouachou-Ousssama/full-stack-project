@@ -57,7 +57,7 @@ const SignUp = () => {
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center">
-      <div className="w-full flex justify-start items-start transform translate-y-[-15px]">
+      <div className="w-full flex justify-start items-start transform translate-y-[-55px]">
         <Link
           className="text-center text-black rounded-xl my-3 no-underline w-full"
           to="/"
@@ -67,7 +67,7 @@ const SignUp = () => {
             viewBox="0 0 24 24"
             width="24"
             height="24"
-            className="w-[30px] h-[30px]"
+            className="w-[35px] h-[35px]"
             color="#000000"
             fill="none"
           >
