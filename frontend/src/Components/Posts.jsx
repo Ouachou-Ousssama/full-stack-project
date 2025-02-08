@@ -195,7 +195,7 @@ const Posts = ({ isDark }) => {
   };
 
   const handleCommentsOperations = () => {
-
+    setIsShowingCommentModel(true);
   }
 
   useEffect(() => {
