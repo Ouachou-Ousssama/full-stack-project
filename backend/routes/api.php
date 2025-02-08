@@ -31,6 +31,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/createComment', [CommentController::class,'createComment']);
     Route::put('/updateCommentCount/{id}',[PostController::class,'updateCommentCount']);
     Route::post('/createMessage',[MessageController::class,'message']);
+    Route::delete('/deleteComment/{id}',[CommentController::class,'deleteComment']);
     Route::get('/getMessages',[MessageController::class,'getMessages']);
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
