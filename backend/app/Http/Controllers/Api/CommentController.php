@@ -22,6 +22,11 @@ class CommentController extends Controller
         ]);
         return response()->json($comment);
     }
+
+    public function getCommentsAll(){
+        $comments = Comment::all();
+        return response()->json($comments);
+    }
     public function getComments($id){
         $comments = Comment::join('users', 'comments.user_id', '=', 'users.id')
              ->select('comments.*','users.firstName','users.lastName')
@@ -34,24 +39,16 @@ class CommentController extends Controller
         return response()->json(['message' => 'There is no comments for this post'], 404);
     }
     public function deleteComment(Request $request,$id){
-        // $comment = Post::join('comments','posts.id','=','comments.post_id')
-        //     ->where('comments.id',$id)
-        //     ->where('posts.id',$request->id)
-        //     ->first()
-        // ;
-        // if ($comment) {
-        //     $comment->delete();
-        // }
+        $request->validate([
+            'id' => 'required'
+        ]);
         $comment = Comment::findOrFail($id);
         if ($comment) {
             $post = Post::findOrFail($request->id);
-            //$isDeleted = $comment->delete();
             $comment->delete();
             $post->update([
                 'comment_count' => $post->comment_count > 0 ? $post->comment_count - 1 : 0
             ]);
-            // if ($isDeleted) {
-            // }
             return response()->json($post);
         }
     }

@@ -12,6 +12,7 @@ const Posts = ({ isDark }) => {
   const [operations, setOperations] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [postid, setPostid] = useState("");
+  const [isShowingCommentModel,setIsShowingCommentModel] = useState(false);
   const [likedPosts, setLikedPosts] = useState();
   const [posts, setPosts] = useState([]);
   const [postById, setPostById] = useState([]);
@@ -192,6 +193,10 @@ const Posts = ({ isDark }) => {
         setPosts(res.data);
       });
   };
+
+  const handleCommentsOperations = () => {
+
+  }
 
   useEffect(() => {
     const myPosts = posts.map((post) => ({
@@ -652,7 +657,7 @@ const Posts = ({ isDark }) => {
                         : "ml-2 flex items-center w-[98%] justify-between"
                     }
                   >
-                    <div className="ml-2 flex items-center ">
+                    <div className="ml-2 flex items-center w-full">
                       <img
                         src={ProfilePic}
                         alt="image cl"
@@ -662,9 +667,12 @@ const Posts = ({ isDark }) => {
                             : "w-9 h-9 rounded-full"
                         }
                       />
-                      <div className="ml-2">
-                        <div className="font-bold text-[20px]">
-                          {post.firstName + " " + post.lastName}
+                      <div className="ml-2 w-full">
+                        <div className="flex items-center justify-between w-full">
+                          <div className="font-bold text-[20px]">
+                            {post.firstName + " " + post.lastName}
+                          </div>
+                          <div className="font-bold text-[20px] cursor-pointer" onClick={handleCommentsOperations}>...</div>
                         </div>
                         <div>{post.content}</div>
                       </div>

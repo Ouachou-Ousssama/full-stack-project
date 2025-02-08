@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/updateProfile/{id}', [GuestController::class,'updateProfile']);
     Route::put('/updateLikesCount/{id}',[PostController::class,'updateLikesCount']);
     Route::get('/getComments/{id}', [CommentController::class,'getComments']);
+    Route::get('/getCommentsAll', [CommentController::class,'getCommentsAll']);
     Route::post('/createComment', [CommentController::class,'createComment']);
     Route::put('/updateCommentCount/{id}',[PostController::class,'updateCommentCount']);
     Route::post('/createMessage',[MessageController::class,'message']);
