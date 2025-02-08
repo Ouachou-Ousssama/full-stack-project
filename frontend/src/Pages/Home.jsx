@@ -16,6 +16,7 @@ const Home = ({ setIsConnected }) => {
   const [component, setComponent] = useState(1);
 
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
   //console.log(isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
 
@@ -23,6 +24,13 @@ const Home = ({ setIsConnected }) => {
   //console.log(tweet);
   //console.log(userByForeign);
   const LogOut = () => {
+    axios.post("http://localhost:8000/api/logOut", { 
+      id : id,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));  
     localStorage.removeItem("token");
     setIsConnected(false);
     navigate("/");
@@ -50,6 +58,9 @@ const Home = ({ setIsConnected }) => {
   const filtredUsers = users.filter(
     (user) => user.id != localStorage.getItem("id")
   );
+
+  console.log(filtredUsers);
+  
 
   const handleDarkMode = () => {
     setIsDark((p) => !p);
@@ -375,15 +386,18 @@ const Home = ({ setIsConnected }) => {
                         : "flex justify-between w-[90%] py-2 text-white items-center border-y border-gray-300"
                     }
                   >
-                    <img
-                      src={ProfilePic}
-                      alt="image"
-                      className={
-                        isDark
-                          ? "w-9 h-9 rounded-full invert"
-                          : "w-9 h-9 rounded-full"
-                      }
-                    />
+                    <div className="flex">
+                      <img
+                        src={ProfilePic}
+                        alt="image"
+                        className={
+                          isDark
+                            ? "w-9 h-9 rounded-full invert"
+                            : "w-9 h-9 rounded-full"
+                        }
+                      />
+                      <div className={user.is_online ? "bg-green-500 w-2  h-2  rounded-full translate-y-6 translate-x-[-7px]" : "bg-red-500 w-2  h-2  rounded-full translate-y-6 translate-x-[-7px]"}></div>
+                    </div>
                     <div
                       className={isDark ? "mr-2 text-white" : "mr-2 text-black"}
                     >

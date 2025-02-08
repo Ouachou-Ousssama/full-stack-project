@@ -25,6 +25,7 @@ const Login = ({ setIsConnected }) => {
       .post("http://localhost:8000/api/loginGuests", {
         email: login,
         password: password,
+        is_online : true
       })
       .then((res) => {
         localStorage.setItem("lastName", res.data.user.lastName);

@@ -53,13 +53,20 @@ class GuestController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'is_online' => 'required'
         ]);
 
         $formFileds = $request->all();
 
         $user = User::where('email', $formFileds['email'])->where('password', $formFileds['password'])->first();
         if ($user) {
+            //User::update([
+              //  'is_online' => $formFileds['is_online']
+            //]);
+            $user->update([
+                'is_online' => $formFileds['is_online']
+            ]);
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
                 'user' => $user,
@@ -97,6 +104,19 @@ class GuestController extends Controller
             return response()->json($user);
         }
         return response()->json(['message' => 'User not found'], 404);
+    }
+
+    public function logOut(Request $request){
+        $user = User::where('id', $request->id)->first();
+        //dd($user);
+        if ($user) {
+            $user->update([
+                'is_online' => false
+            ]);
+            return response()->json(['message' => 'Logged out']);
+        }
+        return response()->json(['message' => 'User not found'], 404);
+        //return response()->json(['message' => 'Logged out']);
     }
 
     /**

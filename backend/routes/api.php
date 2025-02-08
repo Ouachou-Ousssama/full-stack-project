@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);
-
+Route::post('/logOut',[GuestController::class,'logOut']);
 
 
 
