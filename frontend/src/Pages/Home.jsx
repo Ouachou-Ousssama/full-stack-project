@@ -136,6 +136,7 @@ const Home = ({ setIsConnected }) => {
             </motion.li>
             <motion.li
               onClick={() => setComponent(2)}
+              className="cursor-pointer"
               whileHover={{ scale: 1.1, x: 10, y: -5 }}
             >
               <div className="flex items-center">
@@ -152,9 +153,10 @@ const Home = ({ setIsConnected }) => {
             </motion.li>
             <motion.li
               onClick={() => setComponent(3)}
+              className="cursor-pointer"
               whileHover={{ scale: 1.1, x: 10, y: -5 }}
             >
-              <button className="flex items-center justify-center h-10 px-10 text-sm font-semibold text-white bg-[#1D9BF0] rounded-full">
+              <button className="flex items-center justify-center h-10 px-10 text-sm font-semibold text-white bg-[#1D9BF0] rounded-full cursor-pointer">
                 Tweet
               </button>
             </motion.li>

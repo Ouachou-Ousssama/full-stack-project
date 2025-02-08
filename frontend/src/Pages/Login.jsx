@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import axios from "axios";
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Twitter from "../images/twitter2.webp";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = ({ setIsConnected }) => {
   const [login, setLogin] = useState("");
@@ -37,43 +39,40 @@ const Login = ({ setIsConnected }) => {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#424035]">
+    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#fff]">
       <motion.form
-        className="w-[30%] bg-[#2d2b23] rounded-xl h-[75%] flex flex-col justify-evenly items-center"
+        className="w-[40%] bg-[#fff] rounded-xl h-[60%] flex flex-col justify-evenly items-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl text-white">Welcome 👋</h1>
-        <p className="text-white">Sign in to your account</p>
-        <label className="text-white">Login</label>
+        <img className="w-12 h-12 " src={Twitter} alt="twitter" />
+        <h1 className="text-4xl font-bold">Log In To Twitter</h1>
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
-          placeholder="entrer your login"
+          className="w-[60%] h-[11%] bg-transparent border border-[#999696] rounded-md p-2"
+          placeholder="Email"
           onChange={handleLogin}
         />
-        <label className="text-white">Password</label>
         <input
           type="password"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
-          placeholder="entrer your password"
+          className="w-[60%] h-[11%] bg-transparent border border-[#999696] rounded-md p-2"
+          placeholder="Password"
           onChange={handlePassword}
         />
         <motion.button
           whileHover={{ scale: 1.1 }}
-          className="w-[80%] h-[10%] bg-[#ddcb89] text-black rounded-xl my-3 cursor-pointer"
+          className="w-[60%] h-[12%] bg-[#1DA1F2] font-[700] text-[16px] text-white rounded-[76px] cursor-pointer"
           onClick={handleConnection}
         >
-          Login
+          Log In
         </motion.button>
-        <div className="w-[80%] bg-white h-px"></div>
-        <a
-          className="w-[70%] text-center py-2 bg-[#b5b09d] text-black rounded-xl my-3 no-underline"
-          href="/signup"
+        <Link
+          className="w-[70%] text-center text-[#1DA1F2] rounded-xl no-underline text-right mr-[80px]"
+          to="/signup"
         >
           Sign Up
-        </a>
+        </Link>
       </motion.form>
     </div>
   );
