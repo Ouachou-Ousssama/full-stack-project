@@ -86,31 +86,31 @@ const SignUp = () => {
         <h1 className="text-[40px]">Create An Account</h1>
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
           placeholder="first name"
           onChange={handleFirstNameChange}
         />
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
           placeholder="last name"
           onChange={handleLastNameChange}
         />
         <input
           type="date"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
           placeholder="date of birthday"
           onChange={handleDateChange}
         />
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
           placeholder="login"
           onChange={handleLoginChange}
         />
         <input
           type="password"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md text-center text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
           placeholder="password"
           onChange={handlePasswordChange}
         />
