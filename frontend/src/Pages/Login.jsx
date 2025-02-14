@@ -68,12 +68,17 @@ const Login = ({ setIsConnected }) => {
         >
           Log In
         </motion.button>
-        <Link
-          className="w-[70%] text-center text-[#1DA1F2] rounded-xl no-underline text-right mr-[80px]"
-          to="/signup"
-        >
-          Sign Up
-        </Link>
+        <div className="flex justify-between w-[60%]">
+          <Link className="text-center text-[#1DA1F2] rounded-xl no-underline text-right" to="/forgetPassword">
+            Forget Password
+          </Link>
+          <Link
+            className="text-center text-[#1DA1F2] rounded-xl no-underline text-right"
+            to="/signup"
+          >
+            Sign Up
+          </Link>
+        </div>
       </motion.form>
     </div>
   );

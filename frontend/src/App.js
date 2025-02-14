@@ -9,6 +9,7 @@ const NotFound = lazy(() => import("./Pages/NotFound"));
 const AI = lazy(() => import("./Pages/AI"));
 const SignUp = lazy(() => import("./Pages/SignUp"));
 const Chat = lazy(() => import("./Pages/Chat"));
+const ForgetPassword = lazy(() => import("./Pages/ForgetPassword"));
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
@@ -42,6 +43,10 @@ function App() {
           <Route
             path="/home/AskAi"
             element={<AI setIsConnected={setIsConnected} />}
+          />
+          <Route 
+            path="/forgetPassword" 
+            element={<ForgetPassword setIsConnected={setIsConnected} />}
           />
           <Route
             path="/home/chat/:id"

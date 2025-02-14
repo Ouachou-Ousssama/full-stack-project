@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\GuestController;
 use App\Http\Controllers\Api\MessageController as ApiMessageController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\MailController;
 use App\Models\Comment;
 use App\Models\Post;
 
@@ -37,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 Route::post('/craeteGuests', [GuestController::class,'create']);
 Route::post('/loginGuests', [GuestController::class,'login']);
+Route::post('/sendMail', [MailController::class,'sendMail']);
 Route::post('/logOut',[GuestController::class,'logOut']);
 
 
