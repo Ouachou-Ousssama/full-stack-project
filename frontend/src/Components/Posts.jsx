@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 import ProfilePic from "../images/profilee.webp";
-import { format } from 'date-fns';
 
 const Posts = ({ isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
@@ -12,7 +12,11 @@ const Posts = ({ isDark }) => {
   const [operations, setOperations] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [postid, setPostid] = useState("");
-  const [isShowingCommentModel,setIsShowingCommentModel] = useState(false);
+  const [isShowingCommentModel, setIsShowingCommentModel] = useState(false);
+  const [willBeDeleted, setWillBeDeleted] = useState({
+    id: null,
+    post_id: null,
+  });
   const [likedPosts, setLikedPosts] = useState();
   const [posts, setPosts] = useState([]);
   const [postById, setPostById] = useState([]);
@@ -194,9 +198,31 @@ const Posts = ({ isDark }) => {
       });
   };
 
-  const handleCommentsOperations = () => {
-    setIsShowingCommentModel(true);
-  }
+  const handleCommentsOperations = (post) => {
+    setIsShowingCommentModel((p) => !p);
+    setWillBeDeleted({
+      post_id: post.post_id,
+      id: post.id,
+    });
+  };
+
+  const handleCommentDelete = (post) => {
+    axios
+      .delete(`http://localhost:8000/api/deleteComment/${post.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          id: post.post_id,
+        },
+      })
+      .then(() => {
+        console.log("Comment deleted");
+      })
+      .catch((error) => {
+        console.error("There was an error deleting the comment:", error);
+      });
+  };
 
   useEffect(() => {
     const myPosts = posts.map((post) => ({
@@ -387,12 +413,13 @@ const Posts = ({ isDark }) => {
                           " " +
                           userByForeign[index].lastName}
                     </div>
-                    <div className="ml-2">{format(new Date(post.created_at), 'PPpp')}</div>
+                    <div className="ml-2">
+                      {format(new Date(post.created_at), "MM/dd/yyyy HH:mm:ss")}
+                    </div>
                   </div>
                   <div>
                     {
                       <>
-                      
                         <p
                           className={
                             showUpdateModel && post.id === opId
@@ -585,7 +612,10 @@ const Posts = ({ isDark }) => {
                     : "w-full border border-solid border-[#ebeef0] py-2"
                 }
               >
-                <div className="ml-4 flex py-2 cursor-pointer" onClick={() => setShowCommentModel(false)}>
+                <div
+                  className="ml-4 flex py-2 cursor-pointer"
+                  onClick={() => setShowCommentModel(false)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -657,7 +687,7 @@ const Posts = ({ isDark }) => {
                         : "ml-2 flex items-center w-[98%] justify-between"
                     }
                   >
-                    <div className="ml-2 flex items-center w-full">
+                    <div className="ml-2 flex items-center w-full p-1">
                       <img
                         src={ProfilePic}
                         alt="image cl"
@@ -667,14 +697,32 @@ const Posts = ({ isDark }) => {
                             : "w-9 h-9 rounded-full"
                         }
                       />
-                      <div className="ml-2 w-full">
-                        <div className="flex items-center justify-between w-full">
-                          <div className="font-bold text-[20px]">
+                      <div className="ml-2 w-full h-16 flex flex-col justify-between">
+                        <div className="flex items-center justify-between w-full h-full">
+                          <div className="font-bold text-[20px] h-1/2">
                             {post.firstName + " " + post.lastName}
                           </div>
-                          <div className="font-bold text-[20px] cursor-pointer" onClick={handleCommentsOperations}>...</div>
+                          {post.user_id == id && (
+                            <div
+                              className="font-bold text-[20px] h-1/2 cursor-pointer flex items-end flex-col"
+                              onClick={() => handleCommentsOperations(post)}
+                            >
+                              ...
+                              {isShowingCommentModel &&
+                                willBeDeleted.id === post.id && (
+                                  <div className="flex h-8">
+                                    <button
+                                      onClick={() => handleCommentDelete(post)}
+                                      className="bg-red-400 text-[#fff] w-20 py-4 flex justify-center items-center rounded-[12px] cursor-pointer hover:bg-red-800"
+                                    >
+                                      delete
+                                    </button>
+                                  </div>
+                                )}
+                            </div>
+                          )}
                         </div>
-                        <div>{post.content}</div>
+                        <div className={isShowingCommentModel && 'translate-y-[-12px]'}>{post.content}</div>
                       </div>
                     </div>
                   </div>

@@ -28,7 +28,6 @@ class MessageController extends Controller
     public function getMessages(Request $request){
         $request->validate([
             'user_ids' => 'required|array',
-            'user_ids.*' => 'integer'
         ]);
 
         $userIds = $request->input('user_ids');

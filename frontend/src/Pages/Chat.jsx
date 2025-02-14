@@ -3,6 +3,7 @@ import "../Styles/Gemi.css";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import ProfilePic from "../images/profilee.webp";
+import { set } from "date-fns";
 
 function Chat() {
   const [usersByForeign, setUserByForeign] = useState({});
@@ -13,22 +14,22 @@ function Chat() {
   const token = localStorage.getItem("token");
   const sender_id = localStorage.getItem("id");
 
-  const getPostsByForeignKey = async () => {
-    const res = await axios.get(
+  const getPostsByForeignKey = () => {
+    axios.get(
       `http://localhost:8000/api/getPostsByForeignKey/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
-    );
-    setUserByForeign({
-      firstName: res.data[0].firstName,
-      lastName: res.data[0].lastName,
-      email: res.data[0].email,
+    ).then((res) => {
+      setUserByForeign({
+        firstName: res.data[0].firstName,
+        lastName: res.data[0].lastName,
+        email: res.data[0].email,
+      });
+      console.log(res.data[0]);
     });
-    //console.log(res.data[0]);
-    
   };
 
   const handleMessageSubmit = (e) => {
@@ -103,9 +104,9 @@ function Chat() {
             />
             <div>
               <p className="text-sm font-semibold">
-                {usersByForeign.firstName && usersByForeign.lastName ? usersByForeign.firstName + " " + usersByForeign.lastName : "dibyaza ahmed saloka"}
+                {usersByForeign.firstName && usersByForeign.lastName ? usersByForeign.firstName + " " + usersByForeign.lastName : ""}
               </p>
-              <p className="text-xs text-gray-500">{usersByForeign.email ? usersByForeign.email : "dibyaza@gmail.com"}</p>
+              <p className="text-xs text-gray-500">{usersByForeign.email ? usersByForeign.email : ""}</p>
             </div>
           </div>
         </div>

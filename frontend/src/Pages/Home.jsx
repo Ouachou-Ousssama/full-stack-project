@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
-import '../Styles/Gemi.css';
+import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
 const Posts = lazy(() => import("../Components/Posts"));
 const Profile = lazy(() => import("./Profile"));
@@ -24,13 +24,14 @@ const Home = ({ setIsConnected }) => {
   //console.log(tweet);
   //console.log(userByForeign);
   const LogOut = () => {
-    axios.post("http://localhost:8000/api/logOut", { 
-      id : id,
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => console.log(err));  
+    axios
+      .post("http://localhost:8000/api/logOut", {
+        id: id,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
     localStorage.removeItem("token");
     setIsConnected(false);
     navigate("/");
@@ -60,7 +61,6 @@ const Home = ({ setIsConnected }) => {
   );
 
   console.log(filtredUsers);
-  
 
   const handleDarkMode = () => {
     setIsDark((p) => !p);
@@ -396,7 +396,21 @@ const Home = ({ setIsConnected }) => {
                             : "w-9 h-9 rounded-full"
                         }
                       />
-                      <div className={user.is_online ? "bg-green-500 w-2  h-2  rounded-full translate-y-6 translate-x-[-7px]" : "bg-red-500 w-2  h-2  rounded-full translate-y-6 translate-x-[-7px]"}></div>
+                      <div
+                        className={
+                          isDark
+                            ? "bg-[#283340] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
+                            : "bg-[#eee] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
+                        }
+                      >
+                        <div
+                          className={
+                            user.is_online
+                              ? "bg-green-500 w-2  h-2  rounded-full"
+                              : "bg-red-500 w-2  h-2  rounded-full"
+                          }
+                        ></div>
+                      </div>
                     </div>
                     <div
                       className={isDark ? "mr-2 text-white" : "mr-2 text-black"}
@@ -411,7 +425,7 @@ const Home = ({ setIsConnected }) => {
                           className="linkk"
                         >
                           <svg
-                      xmlns="http://www.w3.org/2000/svg"
+                            xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             width="24"
                             height="24"

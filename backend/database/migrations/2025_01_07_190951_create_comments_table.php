@@ -14,7 +14,7 @@ public function up()
 {
     Schema::create('comments', function (Blueprint $table) {
         $table->id();
-        $table->unsignedBigInteger('user_id'); // Foreign key for the user who commented
+        $table->uuid('user_id'); // Foreign key for the user who commented
         $table->unsignedBigInteger('post_id'); // Foreign key for the post being commented on
         $table->text('content'); // Comment content
         $table->timestamps();

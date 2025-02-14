@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState, lazy } from "react";
+import { motion } from "framer-motion";
 import { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 const Login = lazy(() => import("./Pages/Login"));
@@ -16,7 +17,22 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="w-full h-screen flex justify-center items-center">
+            <motion.div
+              animate={{
+                rotate: 360,
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+              }}
+              className="w-24 h-24 border-t-0 border-b-4 border-l-4 border-r-4 border-[#000] rounded-full"
+            ></motion.div>
+          </div>
+        }
+      >
         <Routes>
           <Route path="/" element={<Login setIsConnected={setIsConnected} />} />
           <Route
