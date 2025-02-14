@@ -29,7 +29,7 @@ function App() {
                 duration: 2,
                 repeat: Infinity,
               }}
-              className="w-24 h-24 border-t-0 border-b-4 border-l-4 border-r-4 border-[#000] rounded-full"
+              className="w-24 h-24 border-t-transparent border-b-4 border-l-4 border-r-4 border-b-[#000] border-l-[#000] border-r-[#000] rounded-full"
             ></motion.div>
           </div>
         }
@@ -44,8 +44,8 @@ function App() {
             path="/home/AskAi"
             element={<AI setIsConnected={setIsConnected} />}
           />
-          <Route 
-            path="/forgetPassword" 
+          <Route
+            path="/forgetPassword"
             element={<ForgetPassword setIsConnected={setIsConnected} />}
           />
           <Route
