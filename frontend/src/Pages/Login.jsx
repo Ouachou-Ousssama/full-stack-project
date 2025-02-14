@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = ({ setIsConnected }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,18 +26,18 @@ const Login = ({ setIsConnected }) => {
       .post("http://localhost:8000/api/loginGuests", {
         email: login,
         password: password,
-        is_online : true
+        is_online: true,
       })
       .then((res) => {
         localStorage.setItem("lastName", res.data.user.lastName);
         localStorage.setItem("firstName", res.data.user.firstName);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.user.id);
-        console.log(res.data.user.id);
+        console.log(res.data);
         navigate("/home");
         setIsConnected(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setIsError(true));
   };
 
   return (
@@ -68,8 +69,14 @@ const Login = ({ setIsConnected }) => {
         >
           Log In
         </motion.button>
+        {isError && (
+          <p className="text-red-500 h-[1%]">Email or password is incorrect</p>
+        )}
         <div className="flex justify-between w-[60%]">
-          <Link className="text-center text-[#1DA1F2] rounded-xl no-underline text-right" to="/forgetPassword">
+          <Link
+            className="text-center text-[#1DA1F2] rounded-xl no-underline text-right"
+            to="/forgetPassword"
+          >
             Forget Password
           </Link>
           <Link
