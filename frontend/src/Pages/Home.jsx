@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
 import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
-import Skeleton from "../Components/Skeleton";
+const Skeleton = lazy(() => import("../Components/Skeleton"));
 const Posts = lazy(() => import("../Components/Posts"));
 const Profile = lazy(() => import("./Profile"));
 const Details = lazy(() => import("./Details"));
