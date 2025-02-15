@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import ProfilePic from "../images/profilee.webp";
+const Skeleton = lazy(() => import("./Skeleton"));
 
 const Posts = ({ isDark }) => {
   const [userByForeign, setUserByForeign] = useState([]);
@@ -11,6 +12,7 @@ const Posts = ({ isDark }) => {
   const [opId, setOpId] = useState(null);
   const [operations, setOperations] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState("pending");
   const [postid, setPostid] = useState("");
   const [isShowingCommentModel, setIsShowingCommentModel] = useState(false);
   const [willBeDeleted, setWillBeDeleted] = useState({
@@ -187,6 +189,7 @@ const Posts = ({ isDark }) => {
   //console.log(clicked);
 
   const getPosts = () => {
+    setIsLoading("pending");
     axios
       .get("http://localhost:8000/api/getPosts", {
         headers: {
@@ -195,6 +198,7 @@ const Posts = ({ isDark }) => {
       })
       .then((res) => {
         setPosts(res.data);
+        setIsLoading("completed");
       });
   };
 
@@ -385,215 +389,230 @@ const Posts = ({ isDark }) => {
         }
       ></div>
       <div className={isDark ? "w-full bg-[#1C2733] text-white" : "w-full"}>
-        {posts.map((post, index) => (
-          <div
-            className={
-              isDark
-                ? "w-full flex flex-col py-2 border border-solid border-[#000]"
-                : "w-full flex flex-col py-2 border border-solid border-[#ebeef0]"
-            }
-            key={index}
-          >
-            <div className="ml-2 flex items-center w-[98%] justify-between">
-              <div className="ml-2 flex items-center ">
-                <img
-                  src={ProfilePic}
-                  alt="image cl"
-                  className={
-                    isDark
-                      ? "w-9 h-9 rounded-full invert"
-                      : "w-9 h-9 rounded-full"
-                  }
-                />
-                <div className="ml-2">
-                  <div className="flex items-center">
-                    <div className="font-bold text-[20px]">
-                      {userByForeign[index] &&
-                        userByForeign[index].firstName +
-                          " " +
-                          userByForeign[index].lastName}
-                    </div>
-                    <div className="ml-2">
-                      {format(new Date(post.created_at), "MM/dd/yyyy HH:mm:ss")}
-                    </div>
-                  </div>
-                  <div>
-                    {
-                      <>
-                        <p
-                          className={
-                            showUpdateModel && post.id === opId
-                              ? "hidden"
-                              : "block"
-                          }
-                        >
-                          {post.content}
-                        </p>
-                      </>
+        {posts && isLoading !== "pending" ? (
+          posts.map((post, index) => (
+            <div
+              className={
+                isDark
+                  ? "w-full flex flex-col py-2 border border-solid border-[#000]"
+                  : "w-full flex flex-col py-2 border border-solid border-[#ebeef0]"
+              }
+              key={index}
+            >
+              <div className="ml-2 flex items-center w-[98%] justify-between">
+                <div className="ml-2 flex items-center ">
+                  <img
+                    src={ProfilePic}
+                    alt="image cl"
+                    className={
+                      isDark
+                        ? "w-9 h-9 rounded-full invert"
+                        : "w-9 h-9 rounded-full"
                     }
-                    {showUpdateModel && post.id === opId && (
-                      <div className="flex translate-y-2">
-                        <input
-                          type="text"
-                          defaultValue={postById}
-                          onChange={(e) =>
-                            setFormUpdate({
-                              ...formUpdate,
-                              content: e.target.value,
-                            })
-                          }
-                          className={
-                            isDark
-                              ? "focus:outline-none w-1/2 bg-transparent"
-                              : "focus:outline-none w-1/2"
-                          }
-                        />
-                        <button
-                          className="text-center mr-2 bg-green-400 rounded-lg text-[#fff] px-2"
-                          onClick={() => handleUpdate(post.id)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            color="#000000"
-                            fill="none"
-                          >
-                            <path
-                              d="M16.4249 4.60509L17.4149 3.6151C18.2351 2.79497 19.5648 2.79497 20.3849 3.6151C21.205 4.43524 21.205 5.76493 20.3849 6.58507L19.3949 7.57506M16.4249 4.60509L9.76558 11.2644C9.25807 11.772 8.89804 12.4078 8.72397 13.1041L8 16L10.8959 15.276C11.5922 15.102 12.228 14.7419 12.7356 14.2344L19.3949 7.57506M16.4249 4.60509L19.3949 7.57506"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M18.9999 13.5C18.9999 16.7875 18.9999 18.4312 18.092 19.5376C17.9258 19.7401 17.7401 19.9258 17.5375 20.092C16.4312 21 14.7874 21 11.4999 21H11C7.22876 21 5.34316 21 4.17159 19.8284C3.00003 18.6569 3 16.7712 3 13V12.5C3 9.21252 3 7.56879 3.90794 6.46244C4.07417 6.2599 4.2599 6.07417 4.46244 5.90794C5.56879 5 7.21252 5 10.5 5"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          className="text-center bg-red-400 rounded-lg text-[#fff] px-2"
-                          onClick={() => {
-                            setShowUpdateModel(false);
-                            setOperations(false);
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            color="#000000"
-                            fill="none"
-                          >
-                            <path
-                              d="M19.0005 4.99988L5.00049 18.9999M5.00049 4.99988L19.0005 18.9999"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </button>
+                  />
+                  <div className="ml-2">
+                    <div className="flex items-center">
+                      <div className="font-bold text-[20px]">
+                        {userByForeign[index] &&
+                          userByForeign[index].firstName +
+                            " " +
+                            userByForeign[index].lastName}
                       </div>
-                    )}
+                      <div className="ml-2">
+                        {format(
+                          new Date(post.created_at),
+                          "MM/dd/yyyy HH:mm:ss"
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      {
+                        <>
+                          <p
+                            className={
+                              showUpdateModel && post.id === opId
+                                ? "hidden"
+                                : "block"
+                            }
+                          >
+                            {post.content}
+                          </p>
+                        </>
+                      }
+                      {showUpdateModel && post.id === opId && (
+                        <div className="flex translate-y-2">
+                          <input
+                            type="text"
+                            defaultValue={postById}
+                            onChange={(e) =>
+                              setFormUpdate({
+                                ...formUpdate,
+                                content: e.target.value,
+                              })
+                            }
+                            className={
+                              isDark
+                                ? "focus:outline-none w-1/2 bg-transparent"
+                                : "focus:outline-none w-1/2"
+                            }
+                          />
+                          <button
+                            className="text-center mr-2 bg-green-400 rounded-lg text-[#fff] px-2"
+                            onClick={() => handleUpdate(post.id)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              color="#000000"
+                              fill="none"
+                            >
+                              <path
+                                d="M16.4249 4.60509L17.4149 3.6151C18.2351 2.79497 19.5648 2.79497 20.3849 3.6151C21.205 4.43524 21.205 5.76493 20.3849 6.58507L19.3949 7.57506M16.4249 4.60509L9.76558 11.2644C9.25807 11.772 8.89804 12.4078 8.72397 13.1041L8 16L10.8959 15.276C11.5922 15.102 12.228 14.7419 12.7356 14.2344L19.3949 7.57506M16.4249 4.60509L19.3949 7.57506"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M18.9999 13.5C18.9999 16.7875 18.9999 18.4312 18.092 19.5376C17.9258 19.7401 17.7401 19.9258 17.5375 20.092C16.4312 21 14.7874 21 11.4999 21H11C7.22876 21 5.34316 21 4.17159 19.8284C3.00003 18.6569 3 16.7712 3 13V12.5C3 9.21252 3 7.56879 3.90794 6.46244C4.07417 6.2599 4.2599 6.07417 4.46244 5.90794C5.56879 5 7.21252 5 10.5 5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            className="text-center bg-red-400 rounded-lg text-[#fff] px-2"
+                            onClick={() => {
+                              setShowUpdateModel(false);
+                              setOperations(false);
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              color="#000000"
+                              fill="none"
+                            >
+                              <path
+                                d="M19.0005 4.99988L5.00049 18.9999M5.00049 4.99988L19.0005 18.9999"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
+                {post.user_id == id && (
+                  <div className="flex flex-col items-end w-1/6 h-full">
+                    <div
+                      className="flex flex-col text-[25px] font-bold cursor-pointer"
+                      onClick={() => handleOperations(post.id)}
+                    >
+                      ...
+                    </div>
+                    <div className="flex flex-col w-full h-full">
+                      {operations && opId == post.id ? (
+                        <div className="w-full flex justify-end h-full">
+                          <ul className="text-end flex flex-col justify-between w-1/2 h-full">
+                            <li className="w-full h-full">
+                              <button
+                                className="text-center bg-red-400 w-full text-[#fff] h- rounded-lg mt-1 hover:bg-red-500"
+                                onClick={() => handleDelete(post.id)}
+                              >
+                                Delete
+                              </button>
+                            </li>
+                            <li className="w-full h-full">
+                              <button
+                                className="text-center bg-green-400 w-full text-[#fff]  rounded-lg mt-1 hover:bg-green-500"
+                                onClick={() => handleEdit(post.id)}
+                              >
+                                Edit
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-              {post.user_id == id && (
-                <div className="flex flex-col items-end w-1/6 h-full">
-                  <div
-                    className="flex flex-col text-[25px] font-bold cursor-pointer"
-                    onClick={() => handleOperations(post.id)}
+              <div className="ml-1 py-1 flex">
+                <button className="m-3 flex justify-between w-[38px]">
+                  <svg
+                    onClick={() => handleLike(post.id)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    color={isDark ? "#fff" : "#000"}
+                    className={clicked && postid === post.id ? "border-0" : ""}
                   >
-                    ...
-                  </div>
-                  <div className="flex flex-col w-full h-full">
-                    {operations && opId == post.id ? (
-                      <div className="w-full flex justify-end h-full">
-                        <ul className="text-end flex flex-col justify-between w-1/2 h-full">
-                          <li className="w-full h-full">
-                            <button
-                              className="text-center bg-red-400 w-full text-[#fff] h- rounded-lg mt-1 hover:bg-red-500"
-                              onClick={() => handleDelete(post.id)}
-                            >
-                              Delete
-                            </button>
-                          </li>
-                          <li className="w-full h-full">
-                            <button
-                              className="text-center bg-green-400 w-full text-[#fff]  rounded-lg mt-1 hover:bg-green-500"
-                              onClick={() => handleEdit(post.id)}
-                            >
-                              Edit
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="ml-1 py-1 flex">
-              <button className="m-3 flex justify-between w-[38px]">
-                <svg
-                  onClick={() => handleLike(post.id)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  color={isDark ? "#fff" : "#000"}
-                  className={clicked && postid === post.id ? "border-0" : ""}
+                    <path
+                      d="M19.4626 3.99415C16.7809 2.34923 14.4404 3.01211 13.0344 4.06801C12.4578 4.50096 12.1696 4.71743 12 4.71743C11.8304 4.71743 11.5422 4.50096 10.9656 4.06801C9.55962 3.01211 7.21909 2.34923 4.53744 3.99415C1.01807 6.15294 0.221721 13.2749 8.33953 19.2834C9.88572 20.4278 10.6588 21 12 21C13.3412 21 14.1143 20.4278 15.6605 19.2834C23.7783 13.2749 22.9819 6.15294 19.4626 3.99415Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <p>{post.like_count}</p>
+                </button>
+                <button
+                  className="m-3 flex justify-between w-[38px]"
+                  onClick={() => handleComment(post.id)}
+                  name={post.id}
                 >
-                  <path
-                    d="M19.4626 3.99415C16.7809 2.34923 14.4404 3.01211 13.0344 4.06801C12.4578 4.50096 12.1696 4.71743 12 4.71743C11.8304 4.71743 11.5422 4.50096 10.9656 4.06801C9.55962 3.01211 7.21909 2.34923 4.53744 3.99415C1.01807 6.15294 0.221721 13.2749 8.33953 19.2834C9.88572 20.4278 10.6588 21 12 21C13.3412 21 14.1143 20.4278 15.6605 19.2834C23.7783 13.2749 22.9819 6.15294 19.4626 3.99415Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <p>{post.like_count}</p>
-              </button>
-              <button
-                className="m-3 flex justify-between w-[38px]"
-                onClick={() => handleComment(post.id)}
-                name={post.id}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  color={clicked && postid === post.id ? className : className}
-                  fill="none"
-                >
-                  <path
-                    d="M8 13.5H16M8 8.5H12"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M6.09881 19C4.7987 18.8721 3.82475 18.4816 3.17157 17.8284C2 16.6569 2 14.7712 2 11V10.5C2 6.72876 2 4.84315 3.17157 3.67157C4.34315 2.5 6.22876 2.5 10 2.5H14C17.7712 2.5 19.6569 2.5 20.8284 3.67157C22 4.84315 22 6.72876 22 10.5V11C22 14.7712 22 16.6569 20.8284 17.8284C19.6569 19 17.7712 19 14 19C13.4395 19.0125 12.9931 19.0551 12.5546 19.155C11.3562 19.4309 10.2465 20.0441 9.14987 20.5789C7.58729 21.3408 6.806 21.7218 6.31569 21.3651C5.37769 20.6665 6.29454 18.5019 6.5 17.5"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <p>{post.comment_count}</p>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    color={
+                      clicked && postid === post.id ? className : className
+                    }
+                    fill="none"
+                  >
+                    <path
+                      d="M8 13.5H16M8 8.5H12"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M6.09881 19C4.7987 18.8721 3.82475 18.4816 3.17157 17.8284C2 16.6569 2 14.7712 2 11V10.5C2 6.72876 2 4.84315 3.17157 3.67157C4.34315 2.5 6.22876 2.5 10 2.5H14C17.7712 2.5 19.6569 2.5 20.8284 3.67157C22 4.84315 22 6.72876 22 10.5V11C22 14.7712 22 16.6569 20.8284 17.8284C19.6569 19 17.7712 19 14 19C13.4395 19.0125 12.9931 19.0551 12.5546 19.155C11.3562 19.4309 10.2465 20.0441 9.14987 20.5789C7.58729 21.3408 6.806 21.7218 6.31569 21.3651C5.37769 20.6665 6.29454 18.5019 6.5 17.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <p>{post.comment_count}</p>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </>
+        )}
       </div>
       {showCommentModel && (
         <div className="fixed inset-0 z-[9] flex items-center justify-center">
@@ -722,7 +741,13 @@ const Posts = ({ isDark }) => {
                             </div>
                           )}
                         </div>
-                        <div className={isShowingCommentModel && 'translate-y-[-12px]'}>{post.content}</div>
+                        <div
+                          className={
+                            isShowingCommentModel && "translate-y-[-12px]"
+                          }
+                        >
+                          {post.content}
+                        </div>
                       </div>
                     </div>
                   </div>

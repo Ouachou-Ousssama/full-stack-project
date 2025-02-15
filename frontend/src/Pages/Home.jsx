@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
 import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
+import Skeleton from "../Components/Skeleton";
 const Posts = lazy(() => import("../Components/Posts"));
 const Profile = lazy(() => import("./Profile"));
 const Details = lazy(() => import("./Details"));
@@ -14,6 +15,8 @@ const Home = ({ setIsConnected }) => {
   const [iserr, setIserr] = useState(false);
   const [news, setNews] = useState([]);
   const [component, setComponent] = useState(1);
+  const [isLoadingUsers, setIsLoadingUsers] = useState("pending");
+  const [isLoadingNews, setIsLoadingNews] = useState("pending");
 
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
@@ -42,6 +45,7 @@ const Home = ({ setIsConnected }) => {
     navigate("/");
   }
   const getUsers = () => {
+    setIsLoadingUsers("pending");
     axios
       .get("http://localhost:8000/api/getGuests", {
         headers: {
@@ -60,6 +64,14 @@ const Home = ({ setIsConnected }) => {
     (user) => user.id != localStorage.getItem("id")
   );
 
+  useEffect(() => {
+    if (filtredUsers) {
+      setIsLoadingUsers("completed");
+    }
+  }, [filtredUsers]);
+
+  console.log(isLoadingUsers);
+
   console.log(filtredUsers);
 
   const handleDarkMode = () => {
@@ -72,6 +84,7 @@ const Home = ({ setIsConnected }) => {
   const apiSliced = newsApiKey.slice(1, -1);
 
   const getNews = () => {
+    setIsLoadingNews("pending");
     axios
       .get(
         `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiSliced}`
@@ -82,6 +95,7 @@ const Home = ({ setIsConnected }) => {
           res.data.articles[1],
           res.data.articles[2],
         ]);
+        setIsLoadingNews("completed");
       });
   };
 
@@ -323,28 +337,34 @@ const Home = ({ setIsConnected }) => {
           >
             <p className={isDark ? "ml-3" : "ml-3"}>What's Happening</p>
           </h1>
-          {news.map((item) => (
-            <div
-              className={
-                isDark
-                  ? "w-full flex items-center justify-between bg-[#283340] text-[#fff]"
-                  : "w-full flex items-center justify-between"
-              }
-            >
-              <div className="w-[80%] ml-1 flex justify-center">
-                <span className="text-[12px] text-wrap py-3 ml-1">
-                  {item.title}
-                </span>
+          {isLoadingNews !== "pending" && news ? (
+            news.map((item) => (
+              <div
+                className={
+                  isDark
+                    ? "w-full flex items-center justify-between bg-[#283340] text-[#fff]"
+                    : "w-full flex items-center justify-between"
+                }
+              >
+                <div className="w-[80%] ml-1 flex justify-center">
+                  <span className="text-[12px] text-wrap py-3 ml-1">
+                    {item.title}
+                  </span>
+                </div>
+                <div className="mr-1">
+                  <img
+                    src={item.urlToImage}
+                    className="w-10 h-10 rounded-2xl"
+                    alt="img"
+                  />
+                </div>
               </div>
-              <div className="mr-1">
-                <img
-                  src={item.urlToImage}
-                  className="w-10 h-10 rounded-2xl"
-                  alt="img"
-                />
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <>
+              <Skeleton />
+            </>
+          )}
         </div>
         <div
           className={
@@ -369,144 +389,152 @@ const Home = ({ setIsConnected }) => {
             >
               <p className="ml-3 font-bold text-[20px]">Who To Follows</p>
             </h2>
-            {filtredUsers.map((user, index) => (
-              <>
-                <div
-                  key={index}
-                  className={
-                    isDark
-                      ? "w-full flex items-center justify-center bg-[#283340] "
-                      : "w-full flex items-center justify-center bg-[#eee]"
-                  }
-                >
+            {isLoadingUsers !== "pending" && filtredUsers ? (
+              filtredUsers.map((user, index) => (
+                <>
                   <div
+                    key={index}
                     className={
                       isDark
-                        ? "flex justify-between w-[90%] items-center bg-[#283340] py-2 text-white border-y border-black"
-                        : "flex justify-between w-[90%] py-2 text-white items-center border-y border-gray-300"
+                        ? "w-full flex items-center justify-center bg-[#283340] "
+                        : "w-full flex items-center justify-center bg-[#eee]"
                     }
                   >
-                    <div className="flex">
-                      <img
-                        src={ProfilePic}
-                        alt="image"
-                        className={
-                          isDark
-                            ? "w-9 h-9 rounded-full invert"
-                            : "w-9 h-9 rounded-full"
-                        }
-                      />
-                      <div
-                        className={
-                          isDark
-                            ? "bg-[#283340] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
-                            : "bg-[#eee] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
-                        }
-                      >
+                    <div
+                      className={
+                        isDark
+                          ? "flex justify-between w-[90%] items-center bg-[#283340] py-2 text-white border-y border-black"
+                          : "flex justify-between w-[90%] py-2 text-white items-center border-y border-gray-300"
+                      }
+                    >
+                      <div className="flex">
+                        <img
+                          src={ProfilePic}
+                          alt="image"
+                          className={
+                            isDark
+                              ? "w-9 h-9 rounded-full invert"
+                              : "w-9 h-9 rounded-full"
+                          }
+                        />
                         <div
                           className={
-                            user.is_online
-                              ? "bg-green-500 w-2  h-2  rounded-full"
-                              : "bg-red-500 w-2  h-2  rounded-full"
+                            isDark
+                              ? "bg-[#283340] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
+                              : "bg-[#eee] rounded-full flex w-4 h-4 justify-center items-center translate-y-5 translate-x-[-9px]"
                           }
-                        ></div>
+                        >
+                          <div
+                            className={
+                              user.is_online
+                                ? "bg-green-500 w-2  h-2  rounded-full"
+                                : "bg-red-500 w-2  h-2  rounded-full"
+                            }
+                          ></div>
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          isDark ? "mr-2 text-white" : "mr-2 text-black"
+                        }
+                      >
+                        {user.firstName + " " + user.lastName}
+                      </div>
+                      <div className="mr-2">
+                        <motion.div whileHover={{ scale: 1.1 }}>
+                          <button
+                            onClick={() => setComponent(user.id)}
+                            name={user.id}
+                            className="linkk"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              color={isDark ? "#fff" : "#000"}
+                              fill="none"
+                            >
+                              <path
+                                d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                              />
+                              <path
+                                d="M11 7L17 7"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M7 7L8 7"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M7 12L8 12"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M7 17L8 17"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M11 12L17 12"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M11 17L17 17"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                            </svg>
+                          </button>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.1 }}>
+                          <Link to={`/home/chat/${user.id}`} name={user.id}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              color={isDark ? "#fff" : "#000"}
+                              fill="none"
+                            >
+                              <path
+                                d="M20 9C19.2048 5.01455 15.5128 2 11.0793 2C6.06549 2 2 5.85521 2 10.61C2 12.8946 2.93819 14.9704 4.46855 16.5108C4.80549 16.85 5.03045 17.3134 4.93966 17.7903C4.78982 18.5701 4.45026 19.2975 3.95305 19.9037C5.26123 20.1449 6.62147 19.9277 7.78801 19.3127C8.20039 19.0954 8.40657 18.9867 8.55207 18.9646C8.65392 18.9492 8.78659 18.9636 9 19.0002"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M11 16.2617C11 19.1674 13.4628 21.5234 16.5 21.5234C16.8571 21.5238 17.2132 21.4908 17.564 21.425C17.8165 21.3775 17.9428 21.3538 18.0309 21.3673C18.119 21.3807 18.244 21.4472 18.4938 21.58C19.2004 21.9558 20.0244 22.0885 20.8169 21.9411C20.5157 21.5707 20.31 21.1262 20.2192 20.6496C20.1642 20.3582 20.3005 20.075 20.5046 19.8677C21.4317 18.9263 22 17.6578 22 16.2617C22 13.356 19.5372 11 16.5 11C13.4628 11 11 13.356 11 16.2617Z"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </Link>
+                        </motion.div>
                       </div>
                     </div>
-                    <div
-                      className={isDark ? "mr-2 text-white" : "mr-2 text-black"}
-                    >
-                      {user.firstName + " " + user.lastName}
-                    </div>
-                    <div className="mr-2">
-                      <motion.div whileHover={{ scale: 1.1 }}>
-                        <button
-                          onClick={() => setComponent(user.id)}
-                          name={user.id}
-                          className="linkk"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            color={isDark ? "#fff" : "#000"}
-                            fill="none"
-                          >
-                            <path
-                              d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                            />
-                            <path
-                              d="M11 7L17 7"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M7 7L8 7"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M7 12L8 12"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M7 17L8 17"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M11 12L17 12"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M11 17L17 17"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                            />
-                          </svg>
-                        </button>
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.1 }}>
-                        <Link to={`/home/chat/${user.id}`} name={user.id}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            color={isDark ? "#fff" : "#000"}
-                            fill="none"
-                          >
-                            <path
-                              d="M20 9C19.2048 5.01455 15.5128 2 11.0793 2C6.06549 2 2 5.85521 2 10.61C2 12.8946 2.93819 14.9704 4.46855 16.5108C4.80549 16.85 5.03045 17.3134 4.93966 17.7903C4.78982 18.5701 4.45026 19.2975 3.95305 19.9037C5.26123 20.1449 6.62147 19.9277 7.78801 19.3127C8.20039 19.0954 8.40657 18.9867 8.55207 18.9646C8.65392 18.9492 8.78659 18.9636 9 19.0002"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M11 16.2617C11 19.1674 13.4628 21.5234 16.5 21.5234C16.8571 21.5238 17.2132 21.4908 17.564 21.425C17.8165 21.3775 17.9428 21.3538 18.0309 21.3673C18.119 21.3807 18.244 21.4472 18.4938 21.58C19.2004 21.9558 20.0244 22.0885 20.8169 21.9411C20.5157 21.5707 20.31 21.1262 20.2192 20.6496C20.1642 20.3582 20.3005 20.075 20.5046 19.8677C21.4317 18.9263 22 17.6578 22 16.2617C22 13.356 19.5372 11 16.5 11C13.4628 11 11 13.356 11 16.2617Z"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </Link>
-                      </motion.div>
-                    </div>
                   </div>
-                </div>
+                </>
+              ))
+            ) : (
+              <>
+                <Skeleton />
               </>
-            ))}
+            )}
           </div>
         </div>
         <div className="w-[90%] text-center mb-2">
