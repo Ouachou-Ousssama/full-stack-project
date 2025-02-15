@@ -31,14 +31,11 @@ class User extends Authenticatable
 
     public $incrementing = false;
     
-    // Specify the key type as string, because UUID is a string
     protected $keyType = 'string';
 
-    // Automatically assign a UUID to the 'id' when creating a new User
     protected static function booted()
     {
         static::creating(function ($user) {
-            // Only assign a UUID if 'id' is not already set
             if (empty($user->id)) {
                 $user->id = (string) Str::uuid();
             }
@@ -46,7 +43,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The attributes that should be hidden for serialization.
+     * 
      *
      * @var list<string>
      */
@@ -55,7 +52,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
