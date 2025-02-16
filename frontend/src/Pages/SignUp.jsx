@@ -35,26 +35,6 @@ const SignUp = () => {
     }
   };
 
-  const handleFirstNameChange = (e) => {
-    setSignUp({ ...signUp, firstName: e.target.value });
-  };
-
-  const handleDateChange = (e) => {
-    setSignUp({ ...signUp, dateBirth: e.target.value });
-  };
-
-  const handleLastNameChange = (e) => {
-    setSignUp({ ...signUp, lastName: e.target.value });
-  };
-
-  const handleLoginChange = (e) => {
-    setSignUp({ ...signUp, email: e.target.value });
-  };
-
-  const handlePasswordChange = (e) => {
-    setSignUp({ ...signUp, password: e.target.value });
-  };
-
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center">
       <div className="w-full flex justify-start items-start transform translate-y-[-55px]">
@@ -86,35 +66,34 @@ const SignUp = () => {
         <h1 className="text-[40px]">Create An Account</h1>
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#000] my-1"
           placeholder="first name"
-          onChange={handleFirstNameChange}
+          onChange={(e) => setSignUp({ ...signUp, firstName: e.target.value })}
         />
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#000] my-1"
           placeholder="last name"
-          onChange={handleLastNameChange}
+          onChange={(e) => setSignUp({ ...signUp, lastName: e.target.value })}
         />
         <input
           type="date"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#000] my-1"
           placeholder="date of birthday"
-          onChange={handleDateChange}
+          onChange={(e) => setSignUp({ ...signUp, dateBirth: e.target.value })}
         />
         <input
           type="text"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#000] my-1"
           placeholder="login"
-          onChange={handleLoginChange}
+          onChange={(e) => setSignUp({ ...signUp, email: e.target.value })}
         />
         <input
           type="password"
-          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#cacaca] my-1"
+          className="w-[80%] h-[10%] bg-transparent border border-[#999696] rounded-md p-2 text-[#000] my-1"
           placeholder="password"
-          onChange={handlePasswordChange}
+          onChange={(e) => setSignUp({ ...signUp, password: e.target.value })}
         />
-
         <button
           className="w-[80%] h-[10%] bg-[#1DA1F2] text-black rounded-xl cursor-pointer text-white rounded-[76px] cursor-pointer"
           onClick={handleSubmit}

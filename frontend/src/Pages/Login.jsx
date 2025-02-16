@@ -6,26 +6,20 @@ import Twitter from "../images/twitter2.webp";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = ({ setIsConnected }) => {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    login: "",
+    password: "",
+  });
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    setLogin(e.target.value);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  };
 
   const handleConnection = (e) => {
     e.preventDefault();
     axios
       .post("http://localhost:8000/api/loginGuests", {
-        email: login,
-        password: password,
+        email: form.login,
+        password: form.password,
         is_online: true,
       })
       .then((res) => {
@@ -33,7 +27,6 @@ const Login = ({ setIsConnected }) => {
         localStorage.setItem("firstName", res.data.user.firstName);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.user.id);
-        console.log(res.data);
         navigate("/home");
         setIsConnected(true);
       })
@@ -54,13 +47,13 @@ const Login = ({ setIsConnected }) => {
           type="text"
           className="w-[60%] h-[11%] bg-transparent border border-[#999696] rounded-md p-2"
           placeholder="Email"
-          onChange={handleLogin}
+          onChange={(e) => setForm({ ...form, login: e.target.value })}
         />
         <input
           type="password"
           className="w-[60%] h-[11%] bg-transparent border border-[#999696] rounded-md p-2"
           placeholder="Password"
-          onChange={handlePassword}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
         <motion.button
           whileHover={{ scale: 1.1 }}

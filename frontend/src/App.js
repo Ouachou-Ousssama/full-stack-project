@@ -14,8 +14,6 @@ const ForgetPassword = lazy(() => import("./Pages/ForgetPassword"));
 function App() {
   const [isConnected, setIsConnected] = useState(false);
 
-  console.log(isConnected);
-
   return (
     <BrowserRouter>
       <Suspense
