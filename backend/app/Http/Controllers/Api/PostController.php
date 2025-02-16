@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Like;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -24,6 +25,16 @@ class PostController extends Controller
             'user_id' => $request->user_id,
             'content' => $request->content
         ]);
+        $user = User::all();
+        
+        foreach ($user as $value) {
+            $like = Like::create([
+                'user_id' => $value->id,
+                'post_id' => $post->id,
+                'is_liked' => 0
+            ]);
+        }
+
         return response()->json($post);
     }
 
@@ -86,14 +97,17 @@ class PostController extends Controller
     public function updateLikesCount(Request $request,$id){
         $request->validate([
             'like_count' => 'required',
-            'is_liked' => 'required',
             'post_id' => 'required'
         ]);
         $post = Post::findorfail($id);
+        $liked = Like::where('post_id', $id)->where('user_id', $request->user_id)->first();
+        $liked->update([
+            'is_liked' => !$liked->is_liked
+        ]);
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-        if ($request->is_liked) {
+        if ($liked->is_liked) {
             $post->update([
                 'like_count' => $post->like_count + 1
             ]);

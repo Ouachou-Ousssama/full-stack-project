@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import logo from "../images/Group 18.svg";
 import "../Styles/Gemi.css";
 const Gemi = ({ sendDataToParent, apiKey }) => {
@@ -16,8 +16,6 @@ const Gemi = ({ sendDataToParent, apiKey }) => {
 
   const handleRes = (e) => {
     if (e.key === "Enter") {
-      console.log("eeeeeeeeeeeee");
-
       setkey(apiKey);
       setreqs([...reqs, reqq]);
       setsub(true);
@@ -51,10 +49,6 @@ const Gemi = ({ sendDataToParent, apiKey }) => {
   };
 
   sendDataToParent({ data: data, sub: sub });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div className="w-full h-[20%] flex justify-center items-center relative">

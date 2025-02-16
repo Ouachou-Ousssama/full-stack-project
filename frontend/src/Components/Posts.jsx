@@ -237,13 +237,11 @@ const Posts = ({ isDark }) => {
   const handleLike = (id) => {
     likedPosts.map((post) => {
       if (post.id === id) {
-        post.is_liked = !post.is_liked;
         axios
           .put(
             `http://localhost:8000/api/updateLikesCount/${id}`,
             {
               like_count: post.like_count,
-              is_liked: post.is_liked,
               post_id: post.id,
               user_id: post.user_id
             },
@@ -262,6 +260,9 @@ const Posts = ({ isDark }) => {
       }
     });
   };
+
+  console.log(likedPosts[0]);
+  
 
   useEffect(() => {
     getPosts();
