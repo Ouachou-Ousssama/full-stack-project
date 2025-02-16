@@ -20,19 +20,15 @@ const Home = ({ setIsConnected }) => {
 
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
-  //console.log(isDark);
+  
   localStorage.setItem("theme", isDark ? "dark" : "light");
 
   const navigate = useNavigate();
-  //console.log(tweet);
-  //console.log(userByForeign);
+
   const LogOut = () => {
     axios
       .post("http://localhost:8000/api/logOut", {
         id: id,
-      })
-      .then((res) => {
-        console.log(res);
       })
       .catch((err) => console.log(err));
     localStorage.removeItem("token");
@@ -70,15 +66,9 @@ const Home = ({ setIsConnected }) => {
     }
   }, [filtredUsers]);
 
-  console.log(isLoadingUsers);
-
-  console.log(filtredUsers);
-
   const handleDarkMode = () => {
     setIsDark((p) => !p);
-    //console.log(isDark);
   };
-  //console.log(filtredUsers);
 
   const newsApiKey = process.env.REACT_APP_API_KEY2;
   const apiSliced = newsApiKey.slice(1, -1);
@@ -98,12 +88,6 @@ const Home = ({ setIsConnected }) => {
         setIsLoadingNews("completed");
       });
   };
-
-  useEffect(() => {
-    console.log(component);
-  }, [component]);
-
-  //console.log(userByForeign);
 
   useEffect(() => {
     getUsers();
