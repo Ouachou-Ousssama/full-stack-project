@@ -28,7 +28,6 @@ function Chat() {
         lastName: res.data[0].lastName,
         email: res.data[0].email,
       });
-      console.log(res.data[0]);
     });
   };
 
@@ -65,7 +64,6 @@ function Chat() {
       })
       .then((res) => {
         setmessages(res.data);
-        //console.log(res.data);
       });
   };
 

@@ -14,7 +14,7 @@ const Details = ({ setIsConnected, isDark, id }) => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
-  const localId = localStorage.getItem('id');
+  const localId = localStorage.getItem("id");
 
   if (!token) {
     setIsConnected(false);
@@ -36,7 +36,6 @@ const Details = ({ setIsConnected, isDark, id }) => {
   const handleLike = (id) => {
     setPostid(id);
     setClicked((prev) => !prev);
-
     setLikedPosts((prevLikedPosts) => {
       const existingPostIndex = prevLikedPosts.findIndex(
         (post) => post.post === id
@@ -86,7 +85,6 @@ const Details = ({ setIsConnected, isDark, id }) => {
       })
       .then((res) => {
         setPosts(res.data);
-        //console.log(res.data);
       });
   };
 
@@ -94,7 +92,6 @@ const Details = ({ setIsConnected, isDark, id }) => {
     getDataById();
     getUsersPosts();
     getPostsByForeignKey();
-    //console.log(Users);
   }, []);
 
   return (

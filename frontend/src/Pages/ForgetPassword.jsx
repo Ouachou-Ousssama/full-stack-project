@@ -13,9 +13,7 @@ const ForgetPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8000/api/sendMail", form).then((res) => {
-      console.log(res);
-    });
+    axios.post("http://localhost:8000/api/sendMail", form);
   };
 
   return (
