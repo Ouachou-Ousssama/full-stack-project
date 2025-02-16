@@ -1,13 +1,13 @@
 import "../Styles/Skeleton.css";
 
-const Skeleton = () => {
+const Skeleton = ({ isDark }) => {
   return (
-    <div class="skeleton-container">
-      <div className="flex items-center"> 
-        <div class="skeleton skeleton-avatar"></div>
-        <div class="skeleton skeleton-title ml-3 translate-y-[-5px]"></div>
+    <div className={isDark ? "skeleton-dark" : "skeleton-container"}>
+      <div className="flex items-center">
+        <div className={isDark ? "skeleton-dark-mode skeleton-avatar" : "skeleton skeleton-avatar"}></div>
+        <div className={isDark ? "skeleton-dark-mode skeleton-title" : "skeleton skeleton-title"}></div>
       </div>
-      <div class="skeleton skeleton-text"></div>
+      <div className={isDark ? "skeleton-dark-mode skeleton-text" : "skeleton skeleton-text"}></div>
     </div>
   );
 };

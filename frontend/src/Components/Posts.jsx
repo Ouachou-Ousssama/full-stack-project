@@ -89,7 +89,6 @@ const Posts = ({ isDark }) => {
       })
       .then((res) => {
         setCommentsById(res.data);
-        //console.log(res.data);
       });
   };
 
@@ -108,7 +107,7 @@ const Posts = ({ isDark }) => {
           },
         }
       )
-      .then(() => {
+      .then((res) => {
         getPosts();
         getUserByForeignKey();
       });
@@ -174,8 +173,6 @@ const Posts = ({ isDark }) => {
       });
   };
 
-  //console.log(operations);
-
   const getUserByForeignKey = async () => {
     const res = await axios.get("http://localhost:8000/api/getByForeignKey", {
       headers: {
@@ -185,8 +182,6 @@ const Posts = ({ isDark }) => {
     const res2 = res.data.reverse();
     setUserByForeign(res2);
   };
-
-  //console.log(clicked);
 
   const getPosts = () => {
     setIsLoading("pending");
@@ -231,19 +226,14 @@ const Posts = ({ isDark }) => {
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
+      user_id : post.user_id,
       comment_count: post.comment_count,
       like_count: post.like_count,
       is_liked: false,
     }));
     setLikedPosts(myPosts);
   }, [posts]);
-  localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
-  //setLikedPosts(localStorage.getItem(JSON.stringify("likedPosts")));
-  //console.log(likedPosts);
-  //const likedPostss = localStorage.getItem("likedPosts");
-  //const likedPostss2 = likedPostss ? JSON.parse(likedPostss) : [];
-  //console.log(likedPostss2);
-
+  
   const handleLike = (id) => {
     likedPosts.map((post) => {
       if (post.id === id) {
@@ -254,6 +244,8 @@ const Posts = ({ isDark }) => {
             {
               like_count: post.like_count,
               is_liked: post.is_liked,
+              post_id: post.id,
+              user_id: post.user_id
             },
             {
               headers: {
@@ -271,7 +263,6 @@ const Posts = ({ isDark }) => {
     });
   };
 
-  //console.log(commentsById);
   useEffect(() => {
     getPosts();
     getUserByForeignKey();
@@ -606,11 +597,11 @@ const Posts = ({ isDark }) => {
           ))
         ) : (
           <>
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
+            <Skeleton isDark={isDark} />
+            <Skeleton isDark={isDark} />
+            <Skeleton isDark={isDark} />
+            <Skeleton isDark={isDark} />
+            <Skeleton isDark={isDark} />
           </>
         )}
       </div>

@@ -5,9 +5,23 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+.skeleton-dark {
+  width: 100%;
+  background-color: rgb(28 39 51 / var(--tw-bg-opacity, 1));
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite ease-in-out;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.skeleton-dark-mode {
+  background: linear-gradient(90deg, #2c2a2a 25%, #454343 50%, #4f4e4e 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite ease-in-out;
   border-radius: 4px;

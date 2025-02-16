@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -85,7 +86,8 @@ class PostController extends Controller
     public function updateLikesCount(Request $request,$id){
         $request->validate([
             'like_count' => 'required',
-            'is_liked' => 'required'
+            'is_liked' => 'required',
+            'post_id' => 'required'
         ]);
         $post = Post::findorfail($id);
         if (!$post) {

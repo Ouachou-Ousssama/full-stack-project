@@ -122,7 +122,7 @@ class GuestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Guest $guest)
+    public function show()
     {
         //
     }
@@ -130,7 +130,7 @@ class GuestController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Guest $guest)
+    public function edit()
     {
         //
     }
@@ -138,7 +138,7 @@ class GuestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Guest $guest)
+    public function update(Request $request)
     {
         //
     }
@@ -146,7 +146,7 @@ class GuestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guest $guest)
+    public function destroy()
     {
         //
     }

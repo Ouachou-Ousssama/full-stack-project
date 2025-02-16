@@ -362,7 +362,7 @@ const Home = ({ setIsConnected }) => {
             ))
           ) : (
             <>
-              <Skeleton />
+              <Skeleton isDark={isDark} />
             </>
           )}
         </div>
@@ -532,7 +532,7 @@ const Home = ({ setIsConnected }) => {
               ))
             ) : (
               <>
-                <Skeleton />
+                <Skeleton isDark={isDark} />
               </>
             )}
           </div>
