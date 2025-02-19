@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
 import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
+const Users = lazy(() => import("./Users"));
 const Skeleton = lazy(() => import("../Components/Skeleton"));
 const Posts = lazy(() => import("../Components/Posts"));
 const Profile = lazy(() => import("./Profile"));
 const Details = lazy(() => import("./Details"));
 
-const Home = ({ setIsConnected }) => {
+const Home = ({ setIsConnected, handleChildData }) => {
   const [users, setUsers] = useState([]);
   const [isDark, setIsDark] = useState();
   const [iserr, setIserr] = useState(false);
@@ -17,10 +18,11 @@ const Home = ({ setIsConnected }) => {
   const [component, setComponent] = useState(1);
   const [isLoadingUsers, setIsLoadingUsers] = useState("pending");
   const [isLoadingNews, setIsLoadingNews] = useState("pending");
+  const [dataChild, setDataChild] = useState();
 
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
-  
+
   localStorage.setItem("theme", isDark ? "dark" : "light");
 
   const navigate = useNavigate();
@@ -40,6 +42,15 @@ const Home = ({ setIsConnected }) => {
     setIsConnected(false);
     navigate("/");
   }
+
+  // const handleChildData = (data) => {
+  //   setDataChild(data);
+  // };
+
+  // const sendDataToParent = (data) => {
+  //   handleChildData(data);
+  // };
+
   const getUsers = () => {
     setIsLoadingUsers("pending");
     axios
@@ -59,6 +70,9 @@ const Home = ({ setIsConnected }) => {
   const filtredUsers = users.filter(
     (user) => user.id != localStorage.getItem("id")
   );
+
+  console.log(filtredUsers);
+  
 
   useEffect(() => {
     if (filtredUsers) {
@@ -125,7 +139,7 @@ const Home = ({ setIsConnected }) => {
             />
           </svg>
         </div>
-        <div className="flex flex-col h-36 items-center">
+        <div className="flex flex-col h-48 items-center">
           <ul className="flex flex-col items-center justify-between h-full">
             <motion.li
               onClick={() => setComponent(1)}
@@ -157,7 +171,49 @@ const Home = ({ setIsConnected }) => {
                 >
                   <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
                 </svg>{" "}
-                <p className={isDark ? "mr-1 text-white" : "mr-1"}>profile</p>
+                <p className={isDark ? "mr-1 text-white" : "mr-1"}>Profile</p>
+              </div>
+            </motion.li>
+            <motion.li
+              onClick={() => setComponent(-2)}
+              className="cursor-pointer"
+              whileHover={{ scale: 1.1, x: 10, y: -5 }}
+            >
+              <div className="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 mr-1"
+                  color={isDark ? "#fff" : "#000"}
+                  fill={isDark ? "#fff" : "#000000"}
+                >
+                  <path
+                    d="M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M15 11C17.2091 11 19 9.20914 19 7C19 4.79086 17.2091 3 15 3"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M11 14H7C4.23858 14 2 16.2386 2 19C2 20.1046 2.89543 21 4 21H14C15.1046 21 16 20.1046 16 19C16 16.2386 13.7614 14 11 14Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 14C19.7614 14 22 16.2386 22 19C22 20.1046 21.1046 21 20 21H18.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <p className={isDark ? "mr-1 text-white" : "mr-1"}>Users</p>
               </div>
             </motion.li>
             <motion.li
@@ -220,9 +276,15 @@ const Home = ({ setIsConnected }) => {
       {component === 1 ? (
         <Posts setIsConnected={setIsConnected} isDark={isDark} />
       ) : component === 2 ? (
-        <Profile setIsConnected={setIsConnected} isDark={isDark} />
+        <Profile
+          setIsConnected={setIsConnected}
+          isDark={isDark}
+          sendDataToParent={handleChildData}
+        />
       ) : component === 3 ? (
         <Posts setIsConnected={setIsConnected} isDark={isDark} />
+      ) : component === -2 ? (
+        <Users setIsConnected={setIsConnected} isDark={isDark} />
       ) : (
         idsOnly.map(
           (id) =>

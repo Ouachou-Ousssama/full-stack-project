@@ -37,7 +37,7 @@ function App() {
           <Route path="/" element={<Login setIsConnected={setIsConnected} />} />
           <Route
             path="/home"
-            element={<Home setIsConnected={setIsConnected} />}
+            element={<Home  setIsConnected={setIsConnected} />}
           />
           <Route
             path="/home/AskAi"

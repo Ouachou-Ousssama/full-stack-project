@@ -37,16 +37,17 @@ class GuestController extends Controller
             'lastName' => 'required',
             'dateOfBirth' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:7',
+            'password' => 'required|min:7'
         ]);
         $user = User::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'dateOfBirth' => $request->dateOfBirth,
             'email' => $request->email,
-            'password' => $request->password
+            'password' => $request->password,
         ]);
         return response()->json($user);
+
     }
 
     public function login(Request $request)
@@ -138,9 +139,17 @@ class GuestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        if ($request->hasFile('profilePicture')) {
+            $file = $request->file('profilePicture');
+            $path = $file->store('profile_pictures', 'public');
+            $user->profilePicture = $path;
+            $user->save();
+        }
+        return redirect()->back()->with('success', 'Profile updated successfully');
     }
 
     /**

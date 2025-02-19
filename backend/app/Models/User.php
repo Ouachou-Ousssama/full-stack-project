@@ -26,7 +26,7 @@ class User extends Authenticatable
         'dateOfBirth',
         'email',
         'password',
-        'is_online',
+        'is_online'
     ];
 
     public $incrementing = false;

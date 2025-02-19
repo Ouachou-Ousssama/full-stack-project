@@ -10,7 +10,7 @@ const SignUp = () => {
     lastName: "",
     dateBirth: "",
     email: "",
-    password: "",
+    password: ""
   });
 
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const SignUp = () => {
         lastName: signUp.lastName,
         dateOfBirth: signUp.dateBirth,
         email: signUp.email,
-        password: signUp.password,
+        password: signUp.password
       });
       navigate("/");
     }

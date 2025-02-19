@@ -17,6 +17,22 @@ const Profile = ({ setIsConnected, isDark }) => {
   });
   const [showupdateProdile, setShowupdateProdile] = useState(false);
   const [clicked, setClicked] = useState(false);
+  // const [profilePic, setProfilePic] = useState(ProfilePic);
+
+  // const handleProfilePicChange = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setProfilePic(reader.result);
+  //   };
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  // const sendData = () => {
+  //   sendDataToParent(profilePic);
+  // };
 
   const navigate = useNavigate();
 
@@ -400,6 +416,12 @@ const Profile = ({ setIsConnected, isDark }) => {
                     </svg>
                   </button>
                 </div>
+                {/* <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePicChange}
+                  className="bg-transparent focus:outline-none text-center"
+                /> */}
                 <input
                   type="date"
                   className="bg-transparent focus:outline-none text-center"
