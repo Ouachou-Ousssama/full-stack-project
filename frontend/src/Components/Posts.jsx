@@ -229,7 +229,6 @@ const Posts = ({ isDark }) => {
       user_id : post.user_id,
       comment_count: post.comment_count,
       like_count: post.like_count,
-      is_liked: false,
     }));
     setLikedPosts(myPosts);
   }, [posts]);
@@ -260,9 +259,6 @@ const Posts = ({ isDark }) => {
       }
     });
   };
-
-  console.log(likedPosts[0]);
-  
 
   useEffect(() => {
     getPosts();
@@ -549,7 +545,7 @@ const Posts = ({ isDark }) => {
                     viewBox="0 0 24 24"
                     width="24"
                     height="24"
-                    fill="none"
+                    fill={post.is_liked ? "red" : "none"}
                     color={isDark ? "#fff" : "#000"}
                     className={clicked && postid === post.id ? "border-0" : ""}
                   >

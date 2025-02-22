@@ -111,9 +111,15 @@ class PostController extends Controller
             $post->update([
                 'like_count' => $post->like_count + 1
             ]);
+            $liked->update([
+                'post_like_count' => $liked->post_like_count + 1
+            ]);
         }else{
             $post->update([
                 'like_count' => $post->like_count - 1
+            ]);
+            $liked->update([
+                'post_like_count' => $liked->post_like_count - 1
             ]);
         }
         return response()->json($post);
