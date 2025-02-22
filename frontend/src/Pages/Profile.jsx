@@ -1,4 +1,5 @@
 import axios from "axios";
+import '../Styles/Calender.css'
 import { useEffect, useState } from "react";
 import ProfilePic from "../images/profilee.webp";
 import { useNavigate } from "react-router-dom";
@@ -377,8 +378,8 @@ const Profile = ({ setIsConnected, isDark }) => {
               <div
                 className={
                   isDark
-                    ? "bg-white text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
-                    : "bg-[#171715] text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
+                    ? "bg-[#eee] text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
+                    : "bg-[#1C2733] text-center w-[30%] h-[60%] flex flex-col justify-around items-center rounded-2xl"
                 }
               >
                 <div className="flex justify-end w-[90%] mt-2">
@@ -408,7 +409,11 @@ const Profile = ({ setIsConnected, isDark }) => {
                 </div>
                 <input
                   type="date"
-                  className="bg-transparent focus:outline-none text-center"
+                  className={
+                    isDark
+                      ? "bg-transparent text-[#000] focus:outline-none text-center"
+                      : "bg-transparent text-[#fff] focus:outline-none text-center"
+                  }
                   placeholder="date of bitrth"
                   onChange={(e) =>
                     setDataForm({ ...dataForm, dateOfBirth: e.target.value })
