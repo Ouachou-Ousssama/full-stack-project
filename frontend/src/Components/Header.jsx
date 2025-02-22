@@ -35,7 +35,10 @@ const Header = () => {
           />
           {showMenu && (
             <div className="ml-2 mt-2 p-2 rounded-[16px] h-[10%] flex items-center justify-center w-auto">
-              <Link to="/home" className="text-decoration-none flex justify-center  items-center">
+              <Link
+                to="/home"
+                className="text-decoration-none flex justify-center  items-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

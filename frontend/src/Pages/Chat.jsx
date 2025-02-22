@@ -15,20 +15,19 @@ function Chat() {
   const sender_id = localStorage.getItem("id");
 
   const getPostsByForeignKey = () => {
-    axios.get(
-      `http://localhost:8000/api/getPostsByForeignKey/${id}`,
-      {
+    axios
+      .get(`http://localhost:8000/api/getPostsByForeignKey/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    ).then((res) => {
-      setUserByForeign({
-        firstName: res.data[0].firstName,
-        lastName: res.data[0].lastName,
-        email: res.data[0].email,
+      })
+      .then((res) => {
+        setUserByForeign({
+          firstName: res.data[0].firstName,
+          lastName: res.data[0].lastName,
+          email: res.data[0].email,
+        });
       });
-    });
   };
 
   const handleMessageSubmit = (e) => {
@@ -102,9 +101,13 @@ function Chat() {
             />
             <div>
               <p className="text-sm font-semibold">
-                {usersByForeign?.firstName && usersByForeign?.lastName ? usersByForeign?.firstName + " " + usersByForeign?.lastName : ""}
+                {usersByForeign?.firstName && usersByForeign?.lastName
+                  ? usersByForeign?.firstName + " " + usersByForeign?.lastName
+                  : ""}
               </p>
-              <p className="text-xs text-gray-500">{usersByForeign?.email ? usersByForeign?.email : ""}</p>
+              <p className="text-xs text-gray-500">
+                {usersByForeign?.email ? usersByForeign?.email : ""}
+              </p>
             </div>
           </div>
         </div>

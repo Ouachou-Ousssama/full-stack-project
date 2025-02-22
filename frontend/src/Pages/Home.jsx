@@ -275,7 +275,12 @@ const Home = ({ setIsConnected, handleChildData }) => {
       ) : component === 3 ? (
         <Posts setIsConnected={setIsConnected} isDark={isDark} />
       ) : component === -2 ? (
-        <Users setIsConnected={setIsConnected} isDark={isDark} component={component} setComponent={setComponent} />
+        <Users
+          setIsConnected={setIsConnected}
+          isDark={isDark}
+          component={component}
+          setComponent={setComponent}
+        />
       ) : (
         idsOnly.map(
           (id) =>

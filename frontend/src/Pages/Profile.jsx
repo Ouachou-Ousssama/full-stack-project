@@ -1,5 +1,5 @@
 import axios from "axios";
-import '../Styles/Calender.css'
+import "../Styles/Calender.css";
 import { useEffect, useState } from "react";
 import ProfilePic from "../images/profilee.webp";
 import { useNavigate } from "react-router-dom";

@@ -226,13 +226,13 @@ const Posts = ({ isDark }) => {
   useEffect(() => {
     const myPosts = posts.map((post) => ({
       id: post.id,
-      user_id : post.user_id,
+      user_id: post.user_id,
       comment_count: post.comment_count,
       like_count: post.like_count,
     }));
     setLikedPosts(myPosts);
   }, [posts]);
-  
+
   const handleLike = (id) => {
     likedPosts.map((post) => {
       if (post.id === id) {
@@ -242,7 +242,7 @@ const Posts = ({ isDark }) => {
             {
               like_count: post.like_count,
               post_id: post.id,
-              user_id: post.user_id
+              user_id: post.user_id,
             },
             {
               headers: {
