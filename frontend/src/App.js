@@ -1,4 +1,3 @@
-import "./App.css";
 import { useState, lazy } from "react";
 import { motion } from "framer-motion";
 import { Suspense } from "react";
