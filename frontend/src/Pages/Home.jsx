@@ -284,7 +284,6 @@ const Home = ({ setIsConnected, handleChildData }) => {
                 setIsConnected={setIsConnected}
                 isDark={isDark}
                 id={component}
-                setComponent={setComponent}
               />
             )
         )

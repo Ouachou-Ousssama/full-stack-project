@@ -102,9 +102,9 @@ function Chat() {
             />
             <div>
               <p className="text-sm font-semibold">
-                {usersByForeign.firstName && usersByForeign.lastName ? usersByForeign.firstName + " " + usersByForeign.lastName : ""}
+                {usersByForeign?.firstName && usersByForeign?.lastName ? usersByForeign?.firstName + " " + usersByForeign?.lastName : ""}
               </p>
-              <p className="text-xs text-gray-500">{usersByForeign.email ? usersByForeign.email : ""}</p>
+              <p className="text-xs text-gray-500">{usersByForeign?.email ? usersByForeign?.email : ""}</p>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ function Chat() {
             >
               <p className="font-bold">
                 {message.sender_id != sender_id &&
-                  usersByForeign.firstName + " " + usersByForeign.lastName}
+                  usersByForeign?.firstName + " " + usersByForeign?.lastName}
               </p>
               <p className="text-sm">{message.message}</p>
             </div>

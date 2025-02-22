@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ProfilePic from "../images/profilee.webp";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 const Details = ({ setIsConnected, isDark, id }) => {
   const [Users, setUsers] = useState([]);
@@ -251,11 +252,16 @@ const Details = ({ setIsConnected, isDark, id }) => {
                 }
               />
               <div className="ml-2">
-                <div className="font-bold text-[20px]">
-                  {userByForeign[index] &&
-                    userByForeign[index].firstName +
-                      " " +
-                      userByForeign[index].lastName}
+                <div className="flex items-center">
+                  <div className="font-bold text-[20px]">
+                    {userByForeign[index] &&
+                      userByForeign[index].firstName +
+                        " " +
+                        userByForeign[index].lastName}
+                  </div>
+                  <div className="ml-2">
+                    {format(new Date(post.created_at), "MM/dd/yyyy HH:mm:ss")}
+                  </div>
                 </div>
                 <div>{post.content}</div>
               </div>
