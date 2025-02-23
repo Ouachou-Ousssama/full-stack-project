@@ -37,6 +37,5 @@ class MessageController extends Controller
         ->get();
 
         return response()->json($messages);
-        //    $user = User::where('email', $formFileds['email'])->where('password', $formFileds['password'])
     } 
 }

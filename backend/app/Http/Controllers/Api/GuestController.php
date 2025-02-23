@@ -61,9 +61,6 @@ class GuestController extends Controller
 
         $user = User::where('email', $formFileds['email'])->where('password', $formFileds['password'])->first();
         if ($user) {
-            //User::update([
-              //  'is_online' => $formFileds['is_online']
-            //]);
             $user->update([
                 'is_online' => $formFileds['is_online']
             ]);
@@ -116,7 +113,6 @@ class GuestController extends Controller
             return response()->json(['message' => 'Logged out']);
         }
         return response()->json(['message' => 'User not found'], 404);
-        //return response()->json(['message' => 'Logged out']);
     }
 
     /**
