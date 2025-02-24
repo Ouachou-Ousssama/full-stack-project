@@ -74,6 +74,14 @@ class PostController extends Controller
             'Post Deleted Successfully'
         );
     }
+    public function getAllPosts(){
+        $postsWithUsers = Post::join('users', 'posts.user_id', '=', 'users.id')
+             ->select('posts.*','users.firstName','users.lastName')
+             ->orderBy('posts.id', 'asc')
+             ->get();
+        return response()->json($postsWithUsers);
+    }
+
     public function getPostById($id){
         $post = Post::findorFail($id);
         if (!$post) {

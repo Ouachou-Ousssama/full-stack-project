@@ -5,6 +5,7 @@ import { useEffect, useState, lazy } from "react";
 import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
 import Virefied from "../images/Virefied.webp";
+const Search = lazy(() => import("../Components/Search"));
 const Users = lazy(() => import("./Users"));
 const Skeleton = lazy(() => import("../Components/Skeleton"));
 const Posts = lazy(() => import("../Components/Posts"));
@@ -16,6 +17,9 @@ const Home = ({ setIsConnected, handleChildData }) => {
   const [isDark, setIsDark] = useState();
   const [iserr, setIserr] = useState(false);
   const [news, setNews] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [searchedPosts, setSearchedPosts] = useState([]);
+  const [search, setSearch] = useState("");
   const [component, setComponent] = useState(1);
   const [isLoadingUsers, setIsLoadingUsers] = useState("pending");
   const [isLoadingNews, setIsLoadingNews] = useState("pending");
@@ -27,6 +31,18 @@ const Home = ({ setIsConnected, handleChildData }) => {
   localStorage.setItem("theme", isDark ? "dark" : "light");
 
   const navigate = useNavigate();
+
+  const getAllPosts = () => {
+    axios
+      .get("http://localhost:8000/api/getAllPosts", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setAllPosts(res.data);
+      });
+  };
 
   const LogOut = () => {
     axios
@@ -43,6 +59,19 @@ const Home = ({ setIsConnected, handleChildData }) => {
     setIsConnected(false);
     navigate("/");
   }
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      setComponent(-12);
+      const filteredPosts = allPosts.filter(
+        (post) =>
+          post.content.toLowerCase().includes(search.toLowerCase()) ||
+          post.firstName.toLowerCase().includes(search.toLowerCase()) ||
+          post.lastName.toLowerCase().includes(search.toLowerCase())
+      );
+      setSearchedPosts(filteredPosts);
+    }
+  };
 
   const getUsers = () => {
     setIsLoadingUsers("pending");
@@ -98,6 +127,7 @@ const Home = ({ setIsConnected, handleChildData }) => {
   useEffect(() => {
     getUsers();
     getNews();
+    getAllPosts();
   }, []);
 
   return (
@@ -297,6 +327,12 @@ const Home = ({ setIsConnected, handleChildData }) => {
           component={component}
           setComponent={setComponent}
         />
+      ) : component === -12 ? (
+        <Search
+          setIsConnected={setIsConnected}
+          isDark={isDark}
+          searchedPosts={searchedPosts}
+        />
       ) : (
         idsOnly.map(
           (id) =>
@@ -320,6 +356,8 @@ const Home = ({ setIsConnected, handleChildData }) => {
           <input
             type="text"
             placeholder="Search Twitter"
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
             className={
               isDark
                 ? "w-[85%] text-wrap rounded-md hover:border-none hover:outline-none focus:outline-none bg-transparent text-white"
