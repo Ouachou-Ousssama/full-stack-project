@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getUserById/{id}',[GuestController::class,'getById']);
     Route::get('/getPostsByForeignKey/{id}',[PostController::class,'getPostByForeignKey']);
     Route::post('/createPost',[PostController::class,'create']);
+    Route::delete('/deleteUser/{id}',[GuestController::class,'destroy']);
     Route::get('/getPosts',[PostController::class,'index']);
     Route::get('/getByForeignKey',[PostController::class,'getByForeignKey']);
     Route::get('/getPosts/{id}', [PostController::class,'getPostsByID']);

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import ProfilePic from "../images/profilee.webp";
+import Virefied from "../images/Virefied.webp";
 const Skeleton = lazy(() => import("./Skeleton"));
 
 const Posts = ({ isDark }) => {
@@ -21,6 +22,7 @@ const Posts = ({ isDark }) => {
   });
   const [likedPosts, setLikedPosts] = useState();
   const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState([]);
   const [postById, setPostById] = useState([]);
   const [showCommentModel, setShowCommentModel] = useState(false);
   const [commentId, setCommentId] = useState();
@@ -36,6 +38,18 @@ const Posts = ({ isDark }) => {
 
   const handleTweet = (e) => {
     setTweet(e.target.value);
+  };
+
+  const getUsers = () => {
+    axios
+      .get("http://localhost:8000/api/getGuests", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setUsers(res.data);
+      });
   };
 
   const handleComment = (id) => {
@@ -91,6 +105,8 @@ const Posts = ({ isDark }) => {
         setCommentsById(res.data);
       });
   };
+
+  const isAdmin = users.find((user) => user.role == "admin" && user.id == id);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -263,6 +279,7 @@ const Posts = ({ isDark }) => {
   useEffect(() => {
     getPosts();
     getUserByForeignKey();
+    getUsers();
   }, []);
 
   return (
@@ -344,13 +361,17 @@ const Posts = ({ isDark }) => {
       >
         <form onSubmit={handleFormSubmit} className="postForm">
           <div className="flex ml-2 mt-2 items-center">
-            <img
-              src={ProfilePic}
-              alt="image c"
-              className={
-                isDark ? "w-9 h-9 rounded-full invert" : "w-9 h-9 rounded-full"
-              }
-            />
+            <div>
+              <img
+                src={ProfilePic}
+                alt="image c"
+                className={
+                  isDark
+                    ? "w-9 h-9 rounded-full invert"
+                    : "w-9 h-9 rounded-full"
+                }
+              />
+            </div>
             <input
               type="text"
               className={
@@ -388,7 +409,7 @@ const Posts = ({ isDark }) => {
               key={index}
             >
               <div className="ml-2 flex items-center w-[98%] justify-between">
-                <div className="ml-2 flex items-center ">
+                <div className="ml-2 flex items-center">
                   <img
                     src={ProfilePic}
                     alt="image cl"
@@ -398,6 +419,19 @@ const Posts = ({ isDark }) => {
                         : "w-9 h-9 rounded-full"
                     }
                   />
+                  {isAdmin && userByForeign[index].firstName === "Admin" && (
+                    <div>
+                      <img
+                        className={
+                          isDark
+                            ? "w-6 h-6 rounded-full invert translate-y-[10px] translate-x-[-10px]"
+                            : "w-6 h-6 rounded-full translate-y-[10px] translate-x-[-10px]"
+                        }
+                        src={Virefied}
+                        alt={Virefied}
+                      />
+                    </div>
+                  )}
                   <div className="ml-2">
                     <div className="flex items-center">
                       <div className="font-bold text-[20px]">
@@ -500,7 +534,7 @@ const Posts = ({ isDark }) => {
                     </div>
                   </div>
                 </div>
-                {post.user_id == id && (
+                {post.user_id == id || isAdmin ? (
                   <div className="flex flex-col items-end w-1/6 h-full">
                     <div
                       className="flex flex-col text-[25px] font-bold cursor-pointer"
@@ -535,6 +569,8 @@ const Posts = ({ isDark }) => {
                       )}
                     </div>
                   </div>
+                ) : (
+                  <></>
                 )}
               </div>
               <div className="ml-1 py-1 flex">

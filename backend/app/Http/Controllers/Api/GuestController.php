@@ -142,8 +142,13 @@ class GuestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy($id)
     {
-        //
+        $user = User::findorfail($id);
+        $user->delete();
+        return response()->json([
+            'user' => $user,
+            'message' => 'this user has been deleted'
+        ]);
     }
 }

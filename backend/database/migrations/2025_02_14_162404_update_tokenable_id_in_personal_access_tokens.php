@@ -12,7 +12,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('personal_access_tokens', function (Blueprint $table) {
-            // Change the tokenable_id column to uuid type
             $table->uuid('tokenable_id')->change();
         });
     }

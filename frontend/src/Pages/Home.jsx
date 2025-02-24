@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState, lazy } from "react";
 import "../Styles/Gemi.css";
 import ProfilePic from "../images/profilee.webp";
+import Virefied from "../images/Virefied.webp";
 const Users = lazy(() => import("./Users"));
 const Skeleton = lazy(() => import("../Components/Skeleton"));
 const Posts = lazy(() => import("../Components/Posts"));
@@ -63,7 +64,7 @@ const Home = ({ setIsConnected, handleChildData }) => {
     (user) => user.id != localStorage.getItem("id")
   );
 
-  console.log(filtredUsers);
+  const isAdmin = users.find((user) => user.role == "admin" && user.id == id);
 
   useEffect(() => {
     if (filtredUsers) {
@@ -219,13 +220,28 @@ const Home = ({ setIsConnected, handleChildData }) => {
           </ul>
         </div>
         <div className="w-full flex justify-evenly items-center mb-2">
-          <img
-            src={ProfilePic}
-            alt="image"
-            className={
-              isDark ? "w-9 h-9 rounded-full invert" : "w-9 h-9 rounded-full"
-            }
-          />
+          <div className="flex relative">
+            <img
+              src={ProfilePic}
+              alt="image"
+              className={
+                isDark ? "w-9 h-9 rounded-full invert" : "w-9 h-9 rounded-full"
+              }
+            />
+            {isAdmin && (
+              <div className="">
+                <img
+                  className={
+                    isDark
+                      ? "w-5 h-5 translate-y-[4px] translate-x-[-10px] absolute bottom-0 invert rounded-full"
+                      : "w-5 h-5 translate-y-[4px] translate-x-[-10px] absolute bottom-0 rounded-full"
+                  }
+                  src={Virefied}
+                  alt={Virefied}
+                />
+              </div>
+            )}
+          </div>
           <div className="flex align-center">
             <div className={isDark && "text-white flex items-center"}>
               {localStorage.getItem("firstName") +
