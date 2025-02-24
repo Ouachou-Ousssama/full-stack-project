@@ -36,7 +36,13 @@ const Users = ({ isDark, setComponent, component, setIsConnected }) => {
   );
 
   const handleDelete = (id) => {
-    console.log(id);
+    axios.delete(`http://localhost:8000/api/deleteUser/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(() => {
+      getUsers();
+    })
   };
 
   const idsOnly = users.map((user) => user.id);

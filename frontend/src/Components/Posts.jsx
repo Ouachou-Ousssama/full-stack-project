@@ -424,15 +424,15 @@ const Posts = ({ isDark }) => {
                       <img
                         className={
                           isDark
-                            ? "w-6 h-6 rounded-full invert translate-y-[10px] translate-x-[-10px]"
-                            : "w-6 h-6 rounded-full translate-y-[10px] translate-x-[-10px]"
+                            ? "w-5 h-5 rounded-full invert translate-y-[10px] translate-x-[-12px]"
+                            : "w-5 h-5 rounded-full translate-y-[10px] translate-x-[-12px]"
                         }
                         src={Virefied}
                         alt={Virefied}
                       />
                     </div>
                   )}
-                  <div className="ml-2">
+                  <div className={isAdmin && userByForeign[index].firstName === "Admin" ? "translate-x-[-10px] ml-1" : "ml-2"}>
                     <div className="flex items-center">
                       <div className="font-bold text-[20px]">
                         {userByForeign[index] &&
