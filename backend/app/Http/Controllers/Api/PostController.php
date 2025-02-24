@@ -51,7 +51,7 @@ class PostController extends Controller
     }
     public function getByForeignKey(){
         $posts = Post::join('users', 'posts.user_id', '=', 'users.id')
-             ->select('users.firstName','users.lastName')
+             ->select('users.*')
              ->orderBy('posts.id', 'asc')
              ->get();
         return response()->json($posts);

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'password',
         'is_online',
         'role',
+        'is_verified',
     ];
 
     public $incrementing = false;
